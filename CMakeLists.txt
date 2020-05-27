@@ -30,8 +30,8 @@ enable_language(ASM_NASM)
 # By putting them there, we can pass the same compile definitions to C and ASM
 set(CMAKE_ASM_NASM_COMPILE_OBJECT "<CMAKE_ASM_NASM_COMPILER> <INCLUDES> <DEFINES> <FLAGS> -f ${CMAKE_ASM_NASM_OBJECT_FORMAT} -o <OBJECT> <SOURCE>")
 
-# The compiled VSTi is here
-add_subdirectory(src)
+# The jamming server is here
+add_subdirectory(server)
 
 # We should put examples here
 # add_subdirectory(examples)
