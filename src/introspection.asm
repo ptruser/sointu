@@ -9,7 +9,7 @@
         EXPORT MANGLE_DATA(su_use_16bit_output) dd 0
     %endif
 
-    %ifdef USE_PLAYER
+    %ifdef INCLUDE_PLAYER
 
         %ifdef MAX_SAMPLES
             EXPORT MANGLE_DATA(su_max_samples)  dd MAX_SAMPLES
