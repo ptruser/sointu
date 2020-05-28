@@ -335,6 +335,8 @@ EXPORT MANGLE_FUNC(su_power,0)
 ;   the output buffer
 ;   Stack:  output_ptr
 ;-------------------------------------------------------------------------------
+%ifdef INCLUDE_PLAYER
+
 SECT_TEXT(surender)
 
 EXPORT MANGLE_FUNC(su_render,PTRSIZE)   ; Stack: ptr
@@ -385,12 +387,15 @@ su_render_sampleloop:                   ; loop through every sample in the row
 %endif
     render_epilogue
 
+%endif ; INCLUDE_PLAYER
 ;-------------------------------------------------------------------------------
 ;   su_update_voices function: polyphonic & chord implementation
 ;-------------------------------------------------------------------------------
 ;   Input:      eax     :   current row within song
 ;   Dirty:      pretty much everything
 ;-------------------------------------------------------------------------------
+%ifdef INCLUDE_PLAYER
+
 SECT_TEXT(suupdvce)
 
 %ifdef INCLUDE_MULTIVOICE_TRACKS
@@ -482,6 +487,7 @@ su_update_voices_skipadd:
 
 %endif ;INCLUDE_MULTIVOICE_TRACKS
 
+%endif ;INCLUDE_PLAYER
 ;-------------------------------------------------------------------------------
 ;   Include the rest of the code
 ;-------------------------------------------------------------------------------

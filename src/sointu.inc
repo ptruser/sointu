@@ -160,7 +160,7 @@ section .text ; yasm throws section redeclaration warnings if strucs are defined
     SECT_DATA(supatrns)
 
     EXPORT MANGLE_DATA(su_patterns)
-    %define USE_PLAYER
+    %define INCLUDE_PLAYER
 %endmacro
 
 %define END_PATTERNS
@@ -187,7 +187,7 @@ section .text ; yasm throws section redeclaration warnings if strucs are defined
     SECT_DATA(sutracks)
 
     EXPORT MANGLE_DATA(su_tracks)
-    %define USE_PLAYER
+    %define INCLUDE_PLAYER
 %endmacro
 
 %assign MAX_PATTERNS -1

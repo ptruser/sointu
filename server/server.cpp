@@ -21,6 +21,52 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#include <memory>
+
+#pragma pack(push,1)
+extern "C" {
+    struct Unit {
+        float state[8];
+        float ports[8];
+    };
+
+    struct Voice {
+        int note;
+        int release;
+        float inputs[8];
+        float reserved[6];
+        struct Unit units[63];
+    };
+
+    struct Synth {
+        unsigned char curvoices[32];
+        float left;
+        float right;
+        float aux[6];
+        struct Voice voices[32];
+
+    };
+
+    struct DelayWorkspace {
+        float buffer[65536];
+        float dcin;
+        float dcout;
+        float filtstate;
+    };
+
+    struct SynthState {
+        struct Synth synth;
+        struct DelayWorkspace delaywrks[64]; // let's keep this as 64 for now, so the delays take 16 meg. If that's too little or too much, we can change this in future.
+        unsigned char commands[32 * 64];
+        unsigned char values[32 * 64 * 8];
+        unsigned int polyphony;
+        unsigned int numvoices;
+        unsigned int randseed;
+        unsigned int globaltime;
+        unsigned int rowtick;
+    };
+}
+#pragma pack(pop)
 
 #if UINTPTR_MAX == 0xffffffff // are we 32-bit?
 #if defined(__clang__) || defined(__GNUC__)
@@ -36,7 +82,7 @@
 extern "C" void CALLCONV su_load_gmdls(void);
 #endif
 
-extern "C" void CALLCONV su_tick(float* buffer, unsigned char* val, synthobj * synth, unsigned char* com, int numvoices, int polyphony, int* randseed, &rowtick);
+extern "C" void CALLCONV su_tick(SynthState* synthState);
 
 namespace beast = boost::beast;         // from <boost/beast.hpp>
 namespace http = beast::http;           // from <boost/beast/http.hpp>
@@ -98,6 +144,12 @@ int main(int argc, char* argv[])
 {
     try
     {
+        std::unique_ptr<SynthState> synthState(new SynthState);
+        std::cout << "size is: " << sizeof(SynthState);
+        synthState->randseed = 1;
+        synthState->numvoices = 1;
+        su_tick(synthState.get());
+
         // Check command line arguments.
         if (argc != 3)
         {
@@ -107,6 +159,11 @@ int main(int argc, char* argv[])
                 "    websocket-server-sync 0.0.0.0 8080\n";
             return EXIT_FAILURE;
         }
+
+        #ifdef INCLUDE_GMDLS
+            su_load_gmdls();
+        #endif
+
         auto const address = net::ip::make_address(argv[1]);
         auto const port = static_cast<unsigned short>(std::atoi(argv[2]));
 
