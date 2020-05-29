@@ -7,6 +7,11 @@
 #include <string>
 #include <thread>
 #include <memory>
+#ifdef WIN32
+#include <windows.h>
+#include <shellapi.h>
+#include <shlwapi.h>
+#endif
 
 #pragma pack(push,1)
 extern "C" {
@@ -129,11 +134,15 @@ do_session(tcp::socket& socket)
             // This buffer will hold the incoming message
             beast::flat_buffer flatbuf;
             
-            char recBuf[32 * 64 * 8+1]; // enough to hold the whole values if needed
+            char recBuf[32 * 64 * 8 + 1]; // enough to hold the whole values if needed
+            std::fill_n(recBuf, 32 * 64 * 8 + 1, 0);
 
             // Read a message
             ws.read(flatbuf);
             // TODO: boost::asio::buffer_copy(boost::asio::buffer(recBuf), flatbuf);
+            //boost::asio::const_buffer constBuf = beast::buffers_front(flatbuf.data());
+            int bytes_transferred = flatbuf.size();
+            boost::asio::buffer_copy(boost::asio::buffer(recBuf, bytes_transferred), flatbuf.data(), bytes_transferred);
 
             int voiceno, note, i, samples;
 
@@ -201,6 +210,13 @@ do_session(tcp::socket& socket)
 
 //------------------------------------------------------------------------------
 
+std::string ExePath() {
+    char buffer[MAX_PATH];
+    GetModuleFileName(NULL, buffer, MAX_PATH);
+    std::string::size_type pos = std::string(buffer).find_last_of("\\/");
+    return std::string(buffer).substr(0, pos);
+}
+
 int main(int argc, char* argv[])
 {
     try
@@ -209,17 +225,41 @@ int main(int argc, char* argv[])
             su_load_gmdls();
         #endif
 
-        auto const address = net::ip::make_address(argv[1]);
-        auto const port = static_cast<unsigned short>(std::atoi(argv[2]));
+        auto const port = (argc > 1) ? static_cast<unsigned short>(std::atoi(argv[1])) : 0;
 
         // open the gui using https://stackoverflow.com/questions/17347950/how-do-i-open-a-url-from-c
 
         // The io_context is required for all I/O
         net::io_context ioc{ 1 };
 
-
+        //tcp::resolver::query query("localhost","");
         // The acceptor receives incoming connections
-        tcp::acceptor acceptor{ ioc, tcp::endpoint(tcp::v4(), 0) };
+        tcp::endpoint endp = tcp::endpoint(tcp::v4(), port);
+        tcp::acceptor acceptor{ ioc, endp};
+
+        std::cout << "Listening to port " << acceptor.local_endpoint().port() << "..." << std::endl;
+
+        char url[256];
+        std::sprintf(url, "file://../../../../gui/index.html?port=%u", acceptor.local_endpoint().port());
+
+        #define BUFSIZE 4096
+        TCHAR output[BUFSIZE],output2[BUFSIZE]; // allocate buffer in memory (stack)
+        DWORD dwDisp = BUFSIZE; // max posible buffer size
+        LPDWORD lpdwDisp = &dwDisp;
+        DWORD string_len = GetFullPathNameA(TEXT("..\\..\\..\\..\\gui\\index.html"), BUFSIZE,output,NULL);
+
+        HKEY hKey;
+        LPCTSTR lpSubKey = TEXT( "http\\shell\\open\\command");
+        RegOpenKeyEx(HKEY_CLASSES_ROOT, lpSubKey, 0L, KEY_ALL_ACCESS, &hKey);
+        char szValue[256];
+        DWORD dwSize = 256;
+        RegQueryValueEx(hKey, NULL, NULL, NULL, (LPBYTE)szValue, &dwSize);
+
+        UrlCreateFromPathA(output, output, lpdwDisp, NULL);
+
+        sprintf(output2, "%s?port=%u", output, acceptor.local_endpoint().port());
+        ShellExecute(0, 0, szValue,output2, 0, 1);
+
         for (;;)
         {
             // This will receive the new connection
