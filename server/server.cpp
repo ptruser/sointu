@@ -11,6 +11,7 @@
 #include <windows.h>
 #include <shellapi.h>
 #include <shlwapi.h>
+#include <processthreadsapi.h>
 #endif
 
 #pragma pack(push,1)
@@ -257,8 +258,8 @@ int main(int argc, char* argv[])
 
         UrlCreateFromPathA(output, output, lpdwDisp, NULL);
 
-        sprintf(output2, "%s?port=%u", output, acceptor.local_endpoint().port());
-        ShellExecute(0, 0, szValue,output2, 0, 1);
+        sprintf(output2, "start chrome \"%s?port=%u\"", output, acceptor.local_endpoint().port());
+        system(output2);
 
         for (;;)
         {
