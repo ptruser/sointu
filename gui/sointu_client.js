@@ -1,26 +1,23 @@
-const COMMAND = {
-    'RENDER': 0,
-    'TRIGGER': 1,
-    'RELEASE': 2,
-    'SET_COMMANDS': 3,
-    'SET_VALUES': 4,
-    'SET_POLYPHONY': 5,
-    'SET_NUMVOICES': 6,
-    'RESET': 7
-}
-
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 var context;
 
 document.addEventListener('click', function() {
-     context = new AudioContext();
-     playSound(floatBuf);
+    context = new AudioContext();
+    context.sampleRate = 44100; 
+    playSound(floatBuf);
   });
 
-function playSound(buf) {
-    var buffer = context.createBuffer(2, buf.length, context.sampleRate)
-    buffer.copyToChannel(buf, 0)
+function playSound(arr) {
+    var left = new Float32Array(arr.length/2);
+    var right = new Float32Array(arr.length/2);
+    var buffer = context.createBuffer(2, arr.length/2, context.sampleRate)
+    for (var i = 0;i < arr.length/2;i++) { // deinterleave the sound
+        left[i] = arr[i*2];
+        right[i] = arr[i*2+1];
+    }
+    buffer.copyToChannel(left, 0);
+    buffer.copyToChannel(right, 1);
     var source = context.createBufferSource();
     source.buffer = buffer;
     source.connect(context.destination);
@@ -43,11 +40,12 @@ function start(websocketServerLocation) {
 
     ws.onopen  = function () {
         ws.send(new Uint8Array([COMMAND.SET_COMMANDS,2,4,6,8,11,0]));
-        ws.send(new Uint8Array([COMMAND.SET_VALUES,64,64,64,64,64,64,64,64,64,64,64,32,64]));
-        ws.send(new Uint8Array([COMMAND.TRIGGER,0,80]));
-        ws.send(new Uint8Array([COMMAND.RENDER,0,0,6]))
+        ws.send(new Uint8Array([COMMAND.SET_VALUES,80,80,80,80,64,64,64,64,128,70,128,64,64,128]));
+        ws.send(new Uint8Array([COMMAND.TRIGGER,0,60]));
+        ws.send(new Uint8Array([COMMAND.RENDER,0,0,10]))
+        ws.send(new Uint8Array([COMMAND.RENDER,0,0,10])) 
         ws.send(new Uint8Array([COMMAND.RELEASE,0])); 
-        ws.send(new Uint8Array([COMMAND.RENDER,0,0,6])) 
+        ws.send(new Uint8Array([COMMAND.RENDER,0,0,10])) 
     };
 
     ws.onclose = function () {
