@@ -108,6 +108,7 @@ do_session(tcp::socket& socket)
         std::unique_ptr<SynthState> synthState(new SynthState);
         synthState->randseed = 1;
         synthState->numvoices = 1;
+        synthState->globaltime = 0;
 
         // Construct the stream by moving in the socket
         websocket::stream<tcp::socket> ws{ std::move(socket) };
@@ -140,10 +141,8 @@ do_session(tcp::socket& socket)
 
             // Read a message
             ws.read(flatbuf);
-            // TODO: boost::asio::buffer_copy(boost::asio::buffer(recBuf), flatbuf);
-            //boost::asio::const_buffer constBuf = beast::buffers_front(flatbuf.data());
-            int bytes_transferred = flatbuf.size();
-            boost::asio::buffer_copy(boost::asio::buffer(recBuf, bytes_transferred), flatbuf.data(), bytes_transferred);
+            auto bytesTransferred = flatbuf.size();
+            boost::asio::buffer_copy(boost::asio::buffer(recBuf, bytesTransferred), flatbuf.data(), bytesTransferred);
 
             int voiceno, note, i, samples;
 
@@ -177,10 +176,10 @@ do_session(tcp::socket& socket)
                 synthState->synth.voices[voiceno].release++;
                 break;
             case SET_COMMANDS:
-                //boost::asio::buffer_copy(boost::asio::buffer(tempchar, bytes_transferred),
-               //     buffer_.data(), bytes_transferred);
+                std::memcpy(synthState->commands, &recBuf[1], bytesTransferred-1);
                 break;
             case SET_VALUES:
+                std::memcpy(synthState->values, &recBuf[1], bytesTransferred - 1);
                 break;
             case SET_POLYPHONY:
                 synthState->polyphony = *reinterpret_cast<int*>(&recBuf[1]);

@@ -1,8 +1,18 @@
 %include "../src/sointu.inc"
 
-USE_COMPRES
 USE_ENVELOPE
 USE_OSCILLAT
+USE_MULP
+USE_PAN
+USE_OUT
+
+%define INCLUDE_TRISAW
+%define INCLUDE_SINE
+%define INCLUDE_PULSE
+%define INCLUDE_GATE
+%define INCLUDE_STEREO_OSCILLAT
+%define INCLUDE_STEREO_ENVELOPE
+%define INCLUDE_STEREO_OUT
 
 %include "../src/sointu.asm"
 
