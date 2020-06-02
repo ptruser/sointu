@@ -24,32 +24,23 @@ function playSound(arr) {
     source.start(0);
   }
 
-var floatBuf;
+var floatBuf = new Float32Array();
 
-function start(websocketServerLocation) {
-    ws = new WebSocket(websocketServerLocation);
-
-    ws.onmessage = function (event) {
-        var buf = new ArrayBuffer(event.data.size);
-        var abuf = event.data.arrayBuffer();
-
-        event.data.arrayBuffer().then(buffer => {
-            floatBuf = new Float32Array(buffer);
-        });
-    };
-
-    ws.onopen  = function () {
-        ws.send(new Uint8Array([COMMAND.SET_COMMANDS,2,4,6,8,11,0]));
-        ws.send(new Uint8Array([COMMAND.SET_VALUES,80,80,80,80,64,64,64,64,128,70,128,64,64,128]));
-        ws.send(new Uint8Array([COMMAND.TRIGGER,0,60]));
-        ws.send(new Uint8Array([COMMAND.RENDER,0,0,10]))
-        ws.send(new Uint8Array([COMMAND.RENDER,0,0,10])) 
-        ws.send(new Uint8Array([COMMAND.RELEASE,0])); 
-        ws.send(new Uint8Array([COMMAND.RENDER,0,0,10])) 
-    };
-
-    ws.onclose = function () {
-    };
+function start(serverUrl) {
+    Synth.create(serverUrl,buffer => {
+        var c = new Float32Array(floatBuf.length + buffer.length);
+        c.set(floatBuf);
+        c.set(buffer, floatBuf.length);
+        floatBuf = c;
+    }).then(synth => {
+        synth.setCommands([2,4,6,8,11,0]);
+        synth.setValues([80,80,80,80,64,64,64,64,128,70,128,64,64,128]);
+        synth.trigger(0,60);
+        synth.render(44100);
+        synth.render(44100);
+        synth.release(0);
+        synth.render(44100);
+    })
 }
 
 function get(name) {

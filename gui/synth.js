@@ -1,15 +1,15 @@
-class Synth {
-    COMMAND = {
-        'RENDER': 0,
-        'TRIGGER': 1,
-        'RELEASE': 2,
-        'SET_COMMANDS': 3,
-        'SET_VALUES': 4,
-        'SET_POLYPHONY': 5,
-        'SET_NUMVOICES': 6,
-        'RESET': 7
-    }
+COMMAND = {
+    'RENDER': 0,
+    'TRIGGER': 1,
+    'RELEASE': 2,
+    'SET_COMMANDS': 3,
+    'SET_VALUES': 4,
+    'SET_POLYPHONY': 5,
+    'SET_NUMVOICES': 6,
+    'RESET': 7
+}
 
+class Synth {
     static create(serverUrl,callback) {
         return new Promise((resolve, reject) => {
             var ws = new WebSocket(serverUrl);
@@ -31,11 +31,11 @@ class Synth {
     }
 
     render(numSamples) {
-        arr = new ArrayBuffer(5);
-        view = new DataView(arr);
+        var arr = new ArrayBuffer(5);
+        var view = new DataView(arr);
         view.setUint32(1, numSamples, true); // true = little-endian
         view.setUint8(0,COMMAND.RENDER)
-        this.ws.send(cmd);
+        this.ws.send(arr);
     }
 
     trigger(voiceno,note) {
@@ -48,17 +48,26 @@ class Synth {
         this.ws.send(cmd);
     }
 
-    setCommands(commands) {
-
+    setCommands(bytecode) {
+        var cmd = new Uint8Array(bytecode.length + 1);
+        cmd[0] = COMMAND.SET_COMMANDS;
+        cmd.set(bytecode, 1);
+        this.ws.send(cmd);
     }
 
     setValues(values) {
-        
+        var cmd = new Uint8Array(values.length + 1);
+        cmd[0] = COMMAND.SET_VALUES;
+        cmd.set(values, 1);
+        this.ws.send(cmd);
     }
 
     setPolyphony(polyphony) {
-        var cmd = new Uint8Array([COMMAND.SET_POLYPHONY,polyphony]);
-        this.ws.send(cmd);
+        var arr = new ArrayBuffer(5);
+        var view = new DataView(arr);
+        view.setUint32(1, polyphony, true); // true = little-endian
+        view.setUint8(0,COMMAND.SET_POLYPHONY)
+        this.ws.send(arr);
     }
 
     setNumVoices(numVoices) {
