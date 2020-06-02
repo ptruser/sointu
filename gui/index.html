@@ -2,25 +2,19 @@
 <html>
     <head>
         <title>Sointu - a modular synthesizer for small intros</title>
-        <link rel="stylesheet" href="styles.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="sointu_client.js"></script>
         <script src="synth.js"></script> 
         <script src="gui.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://unpkg.com/sortablejs@1.4.2"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.20.0/vuedraggable.umd.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" /> 
     </head>
-    <body><div class="content">
+    <body class="container-fluid"><div id="app">
         <h1>Sointu</h1>
-        <p id="no_connection" class="message">No connection<span>.</span><span>.</span><span>.</span></p>
-        <p id="connected" class="message">Connected<span>.</span><span>.</span><span>.</span></p>
-        <div id="app">
-          {{ message }}
-        </div>
-        <div id="app-2">
-          <span v-bind:title="message">
-            Hover your mouse over me for a few seconds
-            to see my dynamically bound title!
-          </span>
-        </div>
+        <draggable v-model="myArray" group="people" @start="drag=true" @end="drag=false">
+          <div v-for="element in myArray" :key="element.id">{{element.name}}</div>
+        </draggable>
     </div></body>
 </html>
