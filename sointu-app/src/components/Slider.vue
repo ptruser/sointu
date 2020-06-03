@@ -25,8 +25,7 @@ export default {
     max: { type: Number, default: 128 },
     min: { type: Number, default: 0 },
     largeStep: { type: Number, default: 16 },
-    convert: { type: Function, default: undefined },
-    unit: { type: String, default: '' }
+    convert: { type: Function, default: undefined }
   },
   data: function () {
     return {
@@ -38,7 +37,7 @@ export default {
   },
   watch: {
     value: {
-      handler: function (n, o) { this.refresh() }
+      handler() { this.refresh() }
     }
   },
   computed: {

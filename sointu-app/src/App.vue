@@ -1,17 +1,19 @@
 <template>
   <div id="app">
-    <Slider :ticks="[0,4, 16,28,40,52, 64, 76, 88, 100, 112, 124, 128]" :convert="x=>x-64" :largeStep="12"/>
-    <Slider/>
+    <Envelope/>
+    <Oscillator/> 
   </div>
 </template>
 
 <script>
-import Slider from './components/Slider.vue'
+import Envelope from './components/Envelope.vue'
+import Oscillator from './components/Oscillator.vue'
 
 export default {
   name: 'App',
   components: {
-    Slider
+    Envelope,
+    Oscillator
   }
 }
 </script>
