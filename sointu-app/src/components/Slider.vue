@@ -1,8 +1,8 @@
 <template>
     <div class="container">
-        <canvas ref="labelCanvas" width="263" height="12"/>
-        <canvas ref="sliderCanvas" width="263" height="12" tabindex="1" @mousedown="mousedown"/>
-        <div class="two">{{value}}</div>
+        <canvas class="sliderCanvas" ref="sliderCanvas" tabindex="1" @mousedown="mousedown" @keydown="keydown"/>
+        <div class="value">{{value}}</div>
+        <div class="convertedValue" v-if="convert">{{convert(value)}}</div>
     </div>
 </template>
 
@@ -21,9 +21,12 @@ function getPixelRatio (context) {
 export default {
   name: 'Slider',
   props: {
-    ticks: Array,
+    ticks: { type: Array, default: () => [0, 16, 32, 48, 64, 80, 96, 112, 128] },
     max: { type: Number, default: 128 },
-    min: { type: Number, default: 0 }
+    min: { type: Number, default: 0 },
+    largeStep: { type: Number, default: 16 },
+    convert: { type: Function, default: undefined },
+    unit: { type: String, default: '' }
   },
   data: function () {
     return {
@@ -46,17 +49,29 @@ export default {
   mounted () {
     window.addEventListener('mousemove', this.mousemove)
     window.addEventListener('mouseup', this.mouseup)
+    window.addEventListener('resize', this.refresh)
+    this.refresh()
   },
   beforeDestroy () {
     window.removeEventListener('mousemove', this.mousemove)
     window.removeEventListener('mouseup', this.mouseup)
+    window.removeEventListener('resize', this.refresh)
   },
   methods: {
-    addWidth () {
-      this.value += 10
+    setValue (newValue) {
+      this.value = Math.min(Math.max(Math.round(newValue), this.min), this.max)
     },
-    subWidth () {
-      this.value -= 10
+    keydown (event) {
+      var dir
+      if (event.keyCode === 37) { dir = -1 } else if (event.keyCode === 39) { dir = 1 } else { return }
+      if (event.ctrlKey) { dir *= this.largeStep }
+      var newVal = this.value + dir
+      if (event.shiftKey) {
+        const nextTicks = this.ticks.filter(x => (x - this.value) * dir > 0)
+        const nextTick = dir > 0 ? Math.min.apply(Math, nextTicks) : Math.max.apply(Math, nextTicks)
+        if (nextTick !== undefined) { newVal = nextTick }
+      }
+      this.setValue(newVal)
     },
     mousedown (event) {
       this.dragging = true
@@ -65,8 +80,8 @@ export default {
       if (this.dragging) {
         const rect = this.$refs.sliderCanvas.getBoundingClientRect()
         const x = event.clientX - rect.left
-        const val = Math.round(x / rect.width * this.range + this.min)
-        this.value = Math.min(Math.max(val, this.min), this.max)
+        const val = x / rect.width * this.range + this.min
+        this.setValue(val)
       }
     },
     mouseup (event) {
@@ -76,7 +91,6 @@ export default {
     refresh () {
       const canvas = this.$refs.sliderCanvas
       var ctx = this.$refs.sliderCanvas.getContext('2d')
-      var txt = this.$refs.labelCanvas.getContext('2d')
       const pixelRatio = getPixelRatio(ctx)
 
       // get current size of the canvas
@@ -86,15 +100,12 @@ export default {
       canvas.width = rect.width * devicePixelRatio
       canvas.height = rect.height * devicePixelRatio
 
-      // ensure all drawing operations are scaled
-      // ctx.scale(getPixelRatio(ctx), getPixelRatio(ctx))
-
       // scale everything down using CSS
       canvas.style.width = rect.width + 'px'
       canvas.style.height = rect.height + 'px'
 
       ctx.save()
-      ctx.scale(getPixelRatio(ctx), getPixelRatio(ctx))
+      ctx.scale(pixelRatio, pixelRatio)
       ctx.clearRect(0, 0, 263, 12)
 
       var grd = ctx.createLinearGradient(3, 0, 259, 0)
@@ -104,7 +115,6 @@ export default {
 
       ctx.beginPath()
       ctx.moveTo(3, 12)
-         ctx.lineTo(3, 0)   
       ctx.lineTo(259, 0)
       ctx.lineTo(259, 12)
       ctx.closePath()
@@ -116,13 +126,10 @@ export default {
       ctx.beginPath()
       const lineWidth2 = Math.round(pixelRatio)
       ctx.lineWidth = lineWidth2
-      txt.font = '12px Arial'
-      txt.textAlign = 'center'
       this.ticks.forEach((t, i) => {
-        const x = Math.round(((t - this.min) / this.range * 256 + 3) * pixelRatio) + ((lineWidth2 % 2 == 0) ? pixelRatio / 2 : 0)
+        const x = Math.round(((t - this.min) / this.range * 256 + 3) * pixelRatio) + ((lineWidth2 % 2 === 0) ? pixelRatio / 2 : 0)
         ctx.moveTo(x, 0)
         ctx.lineTo(x, canvas.height)
-        txt.fillText(t, t, 0)
       })
       ctx.stroke()
 
@@ -131,7 +138,7 @@ export default {
       ctx.lineWidth = lineWidth
       const rx = Math.round(((this.value - this.min) / this.range * 256) * pixelRatio)
       ctx.rect(rx + lineWidth / 2, lineWidth / 2, Math.ceil(7 * pixelRatio), Math.ceil(11 * pixelRatio))
-           ctx.fillStyle = 'white' 
+      ctx.fillStyle = 'white'
       ctx.fill()
 
       ctx.stroke()
@@ -140,18 +147,45 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .container {
+  position: relative;
   width: 400px;
-  height: 24px;
+  height: 12px;
+  padding: 3px;
 }
 
-.slider {
-  width: 201px;
+div {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+}
+
+canvas {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 263px;
   height: 12px;
   padding: 0;
   margin: 0;
 }
 
+canvas:focus {
+  background-color:blueviolet;
+  outline: none;
+}
+
+.convertedValue {
+   position: absolute;
+  top: 0px;
+  left: 290px;
+  color: blue;
+}
+
+.value {
+   position: absolute;
+  top: 0px;
+  left: 263px;
+  padding: 0;
+}
 </style>

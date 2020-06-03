@@ -1,18 +1,16 @@
 <template>
   <div id="app">
-    <Slider :ticks="[0,10, 20, 30,128]"/>
-    <Slider :ticks="[0,10, 20, 30,128]"/>  
+    <Slider :ticks="[0,4, 16,28,40,52, 64, 76, 88, 100, 112, 124, 128]" :convert="x=>x-64" :largeStep="12"/>
+    <Slider/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import Slider from './components/Slider.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
     Slider
   }
 }
