@@ -15,7 +15,7 @@
           {{ element.title }}
         </div>
              </draggable>
-      </div>
+    </div>
     <div class="col-7">
       <draggable
         tag="el-collapse"
@@ -31,7 +31,7 @@
         >
         <template slot="title">
           <div> <i class="fa fa-align-justify handle"></i></div>
-          <div>{{ item.title }}</div><div class="title">Information TBW</i></div>
+          <div>{{ item.title }}</div><div class="title">Information TBW</div>
         </template>
           <Envelope :key="item.id+100"/>
         </el-collapse-item>
@@ -43,7 +43,7 @@
 <script>
 import 'element-ui/lib/theme-chalk/index.css'
 import draggable from 'vuedraggable'
-import Envelope from './Envelope.vue'
+import Envelope from './Envelope'
 
 export default {
   name: 'third-party',
@@ -99,7 +99,8 @@ export default {
         props: {
           value: this.activeNames
         }
-      }
+      },
+      instruments: [0, 1, 2, 3, 4, 5, 6]
     }
   },
   methods: {
