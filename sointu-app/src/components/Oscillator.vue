@@ -2,7 +2,7 @@
     <table>
         <tr>
             <td>Waveform</td>
-            <td><Slider :convert="convertAttack"/></td>
+            <td><Slider/></td>
         </tr>
         <tr>
             <td>Transpose</td>
@@ -11,7 +11,7 @@
         <tr>
             <td>Detune</td>
             <td><Slider/></td>
-        </tr>    
+        </tr>
         <tr>
             <td>Phase</td>
             <td><Slider/></td>
@@ -19,15 +19,15 @@
         <tr>
             <td>Color</td>
             <td><Slider/></td>
-        </tr>   
+        </tr>
         <tr>
             <td>Gain</td>
             <td><Slider/></td>
-        </tr>    
+        </tr>
         <tr>
             <td>Unison</td>
             <td>Fooo</td>
-        </tr>                     
+        </tr>
     </table>
 </template>
 

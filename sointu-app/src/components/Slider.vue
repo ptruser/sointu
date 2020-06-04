@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <canvas class="sliderCanvas" ref="sliderCanvas" tabindex="1" @mousedown="mousedown" @keydown="keydown"/>
+        <canvas class="sliderCanvas" ref="sliderCanvas" tabindex="1" @mousedown="mousedown" @keydown="keydown"></canvas>
         <div class="value">{{value}}</div>
         <div class="convertedValue" v-if="convert">{{convert(value)}}</div>
     </div>
@@ -37,7 +37,7 @@ export default {
   },
   watch: {
     value: {
-      handler() { this.refresh() }
+      handler () { this.refresh() }
     }
   },
   computed: {
