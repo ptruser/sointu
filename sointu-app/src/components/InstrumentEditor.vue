@@ -21,6 +21,7 @@
         tag="el-collapse"
         :list="list"
         group="opcodes"
+              :clone="clone"
         :component-data="collapseComponentData"
          handle=".handle"
       >

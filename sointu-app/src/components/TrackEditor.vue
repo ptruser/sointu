@@ -1,32 +1,32 @@
 <template>
-    <table>
+    <table tabindex="1">
         <thead>
 
 <draggable v-model="tracks" tag="tr">
              <th class="cell" :key="-1">
-              {{ index }}
+              #
             </th>
             <th class="cell" v-for="(item, index) in tracks" :key="index" scope="col">
               {{ index }}
+              V:{{item.voices}}
             </th>
 </draggable>
         </thead>
-        <tr v-for="row in Array(4).keys()" :key="row">
+        <tr v-for="row in Array(songLength).keys()" :key="row">
             <td class="rownumber">{{row}}</td>
-            <td class="cell" v-for="(item, index) in tracks" :key="index">{{item[row]}}</td>
+            <td class="cell" v-for="(item, index) in tracks" :key="index" >{{item.sequence[row]}}</td>
         </tr>
     </table>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
+import { mapState } from 'vuex'
 
 export default {
-  data () {
-    return {
-      tracks: [[0, 2, 3, 4], [6, 3, 1], [1, 2, 3], [], [], [], [], []]
-    }
-  },
+  computed: mapState([
+    'tracks', 'songLength'
+  ]),
   components: {
     draggable
   }

@@ -2,20 +2,20 @@
   <splitpanes vertical  class="default-theme" style="width: 100%; height: calc(100vh - 10px)">
     <pane>
       <splitpanes horizontal  class="default-theme" style="height: 100vh - 10px">
-        <pane class="innerpane"><TrackEditor/></pane>
-        <pane class="innerpane">1</pane>
+        <pane><div class="scrolling"><div class="centering"><TrackEditor/></div></div></pane>
+        <pane><div class="scrolling"><div class="centering">1</div></div></pane>
       </splitpanes>
     </pane>
      <pane>
       <splitpanes horizontal  class="default-theme" style="height: 100vh - 10px">
-        <pane class="innerpane">PatternEditor</pane>
-        <pane class="innerpane">Keyboard</pane>
+        <pane><PatternEditor/></pane>
+        <pane><div class="scrolling"><div class="centering">Keyboard</div></div></pane>
       </splitpanes>
     </pane>
      <pane>
       <splitpanes horizontal  class="default-theme" style="height: 100vh - 10px">
-        <pane class="innerpane"><div class="centering"><InstrumentEditor/></div></pane>
-        <pane class="innerpane"></pane>
+        <pane><div class="scrolling"><div class="centering"><InstrumentEditor/></div></div></pane>
+        <pane><div class="scrolling"><div class="centering"></div></div></pane>
       </splitpanes>
     </pane>
   </splitpanes>
@@ -24,18 +24,18 @@
 <script>
 import InstrumentEditor from './components/InstrumentEditor.vue'
 import TrackEditor from './components/TrackEditor.vue'
-import ElementUI from 'element-ui'
-import Vue from 'vue'
+import PatternEditor from './components/PatternEditor.vue'
 import { Splitpanes, Pane } from 'splitpanes'
 import 'splitpanes/dist/splitpanes.css'
-
-Vue.use(ElementUI)
+import store from './store.js'
 
 export default {
   name: 'App',
+  store,
   components: {
     InstrumentEditor,
     TrackEditor,
+    PatternEditor,
     Splitpanes,
     Pane
   }
@@ -53,48 +53,33 @@ export default {
      flex-wrap: wrap;
 }
 
-div.trackEditor{
-  max-width: 500px;
-  height: 0%;
-  max-height: 95vh;
-    border: solid 1px black;
-      overflow: scroll;
-}
-
-div.patternEditor{
-    width:400px;
-     height: 50%;
-    border: solid 1px black;
-flex-grow: 1;
-}
-
-div.instrumentEditor{ width: 20%;
-    width:400px;
-     height: 80vh;
-    border: solid 1px black;
-    overflow-y: scroll;
-}
-
-.innerpane {
+.scrolling {
   overflow: overlay;
-     box-sizing: padding-box; 
+  display: flex; 
+  width: 100%;
+  height: 100%;
 }
 
-.innerpane::-webkit-scrollbar {
+.centering {
+ margin: auto;
+}
+
+.scrolling::-webkit-scrollbar {
   width: 14px;
 }
 
-.innerpane::-webkit-scrollbar-track {
+.scrolling::-webkit-scrollbar-track {
   background:rgba(0, 0.5, 0, 0.5);
 }
 
-.innerpane::-webkit-scrollbar-thumb {
+.scrolling::-webkit-scrollbar-thumb {
   background: #888;
 }
 
-.scroll::-webkit-scrollbar-thumb:hover {
+.scrolling::-webkit-scrollbar-thumb:hover {
   background: #333;
 }
+
 
 .splitpanes__pane {
   display: flex;
@@ -108,11 +93,6 @@ body {
     background-color: #555;
 }
 
-.centering {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: auto;
-  margin-bottom: auto;  
-}
+
 
 </style>

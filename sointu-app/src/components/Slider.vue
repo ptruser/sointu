@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <canvas class="sliderCanvas" ref="sliderCanvas" tabindex="1" @mousedown="mousedown" @keydown="keydown"></canvas>
+        <canvas class="sliderCanvas" ref="sliderCanvas" tabindex="3" @mousedown="mousedown" @keydown="keydown"></canvas>
         <div class="value">{{value}}</div>
         <div class="convertedValue" v-if="convert">{{convert(value)}}</div>
     </div>
@@ -93,7 +93,7 @@ export default {
       const pixelRatio = getPixelRatio(ctx)
 
       // get current size of the canvas
-      //const rect = canvas.getBoundingClientRect()
+      // const rect = canvas.getBoundingClientRect()
 
       // increase the actual size of our canvas
       canvas.width = 263 * devicePixelRatio
