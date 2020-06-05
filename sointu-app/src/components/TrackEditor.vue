@@ -19,12 +19,12 @@
 </template>
 
 <script>
-import draggable from "vuedraggable";
+import draggable from 'vuedraggable'
 
 export default {
   data () {
     return {
-      tracks: [[0,2,3,4],[6,3,1],[1,2,3],[],[],[],[],[]]
+      tracks: [[0, 2, 3, 4], [6, 3, 1], [1, 2, 3], [], [], [], [], []]
     }
   },
   components: {

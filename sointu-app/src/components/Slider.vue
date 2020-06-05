@@ -93,15 +93,15 @@ export default {
       const pixelRatio = getPixelRatio(ctx)
 
       // get current size of the canvas
-      const rect = canvas.getBoundingClientRect()
+      //const rect = canvas.getBoundingClientRect()
 
       // increase the actual size of our canvas
-      canvas.width = rect.width * devicePixelRatio
-      canvas.height = rect.height * devicePixelRatio
+      canvas.width = 263 * devicePixelRatio
+      canvas.height = 12 * devicePixelRatio
 
       // scale everything down using CSS
-      canvas.style.width = rect.width + 'px'
-      canvas.style.height = rect.height + 'px'
+      canvas.style.width = 263 + 'px'
+      canvas.style.height = 12 + 'px'
 
       ctx.save()
       ctx.scale(pixelRatio, pixelRatio)
