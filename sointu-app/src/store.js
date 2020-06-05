@@ -8,6 +8,7 @@ const debug = process.env.NODE_ENV !== 'production'
 
 const DEFAULT_INSTRUMENT = {
   voices: 1,
+  name: 'Default Instrument',
   patch: [{ type: 'envelope', stereo: false, attack: 64, decay: 64, sustain: 64, release: 64, gain: 128 },
     { type: 'oscillator', stereo: false, transpose: 64, detune: 64, phase: 0, color: 128, shape: 64, gain: 128 },
     { type: 'mulp', stereo: false },
@@ -23,12 +24,13 @@ export default new Vuex.Store({
   state: {
     patterns: [new Array(16).fill(0)],
     tracks: [{ voices: 1, sequence: [0] }],
-    instruments: [_.cloneDeep(DEFAULT_INSTRUMENT)],
+    instruments: [_.cloneDeep(DEFAULT_INSTRUMENT), _.cloneDeep(DEFAULT_INSTRUMENT)],
     songLength: 1,
     patternLength: 16,
     currentPattern: 0,
     currentRow: 0,
-    currentTrack: 0
+    currentTrack: 0,
+    bpm: 120
   },
   mutations: {
     addInstrument (state) {
@@ -42,6 +44,12 @@ export default new Vuex.Store({
     },
     setCurrentTrack (state, newTrack) {
       state.currentTrack = mod(newTrack, state.tracks.length)
+    },
+    setPatternLength (state, patternLength) {
+      state.patternLength = patternLength
+    },
+    setBpm (state, bpm) {
+      state.bpm = bpm
     }
   },
   strict: debug

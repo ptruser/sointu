@@ -1,27 +1,18 @@
 <template>
   <div class="row">
-    <div class="col-3">
-      <draggable
-        class="dragArea list-group"
-        :list="library"
-        :group="{ name: 'opcodes', pull: 'clone', put: false }"
-        @change="log"
-      >
-        <div
-          class="list-group-item"
-          v-for="element in library"
-          :key="element.title"
-        >
-          {{ element.title }}
-        </div>
-             </draggable>
-    </div>
+    <el-tabs type="card" addable>
+  <el-tab-pane
+    v-for="(item, index) in instruments"
+    :key="item.name"
+    :label="item.name+index"
+    :name="'tab'+index"/>
+  {{index}}
+</el-tabs>
     <div class="col-7">
       <draggable
         tag="el-collapse"
         :list="list"
         group="opcodes"
-              :clone="clone"
         :component-data="collapseComponentData"
          handle=".handle"
       >
@@ -38,6 +29,24 @@
         </el-collapse-item>
       </draggable>
     </div>
+  </el-tab-pane>
+
+    <div class="col-3" @click="foo">
+      <draggable
+        class="dragArea list-group"
+        :list="library"
+        :group="{ name: 'opcodes', pull: 'clone', put: false }"
+      >
+        <div
+          class="list-group-item"
+          v-for="element in library"
+          :key="element.title"
+        >
+          {{ element.title }}
+        </div>
+             </draggable>
+    </div>
+
   </div>
 </template>
 
@@ -45,11 +54,9 @@
 import 'element-ui/lib/theme-chalk/index.css'
 import draggable from 'vuedraggable'
 import Envelope from './Envelope'
+import { mapState } from 'vuex'
 
 export default {
-  name: 'third-party',
-  display: 'Third party',
-  order: 10,
   components: {
     draggable,
     Envelope
@@ -100,13 +107,18 @@ export default {
         props: {
           value: this.activeNames
         }
-      },
-      instruments: [0, 1, 2, 3, 4, 5, 6]
+      }
     }
   },
+  computed: mapState([
+    'instruments'
+  ]),
   methods: {
     inputChanged (val) {
       this.activeNames = val
+    },
+    foo() {
+      console.log(this.instruments)
     }
   }
 }

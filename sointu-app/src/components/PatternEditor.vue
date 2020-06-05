@@ -34,48 +34,30 @@ export default {
     draggable
   },
   watch: {
-    currentRow: function(newRow) { this.scrollIntoView(newRow,this.currentTrack) },
-    currentTrack: function(newTrack) { this.scrollIntoView(this.currentRow,newTrack) }
+    currentRow: function (newRow) { this.scrollIntoView(newRow, this.currentTrack) },
+    currentTrack: function (newTrack) { this.scrollIntoView(this.currentRow, newTrack) }
   },
   methods: {
     mousedown (row, col) {
       this.$store.commit('setCurrentRow', row)
       this.$store.commit('setCurrentTrack', col)
     },
-    scrollIntoView (row,col) {
-        const el = this.$refs.notecell[col+row*this.tracks.length]
-        const div = this.$refs.patternPane
-        const m = 50;
-        const newTop = Math.min(Math.max(div.scrollTop,el.offsetTop+el.offsetHeight-div.offsetHeight),el.offsetTop)
-        div.scrollTop =  newTop
-        const newLeft = Math.min(Math.max(div.scrollLeft,el.offsetLeft+el.offsetHeight-div.offsetWidth),el.offsetLeft)
-        div.scrollLeft = newLeft
+    scrollIntoView (row, col) {
+      const el = this.$refs.notecell[col + row * this.tracks.length]
+      const div = this.$refs.patternPane
+      const m = 50
+      const newTop = Math.min(Math.max(div.scrollTop, el.offsetTop + el.offsetHeight - div.offsetHeight), el.offsetTop)
+      div.scrollTop = newTop
+      const newLeft = Math.min(Math.max(div.scrollLeft, el.offsetLeft + el.offsetHeight - div.offsetWidth), el.offsetLeft)
+      div.scrollLeft = newLeft
     },
     keydown (event) {
       if (event.ctrlKey) {
-          if (event.keyCode == 37)
-            this.$store.commit('setCurrentTrack', 0)
-          else if (event.keyCode == 39)
-            this.$store.commit('setCurrentTrack', this.tracks.length - 1) 
-          else if (event.keyCode == 38)
-            this.$store.commit('setCurrentRow', 0) 
-          else if (event.keyCode == 40)
-            this.$store.commit('setCurrentRow', this.patternLength - 1)
-          else
-            return;
+        if (event.keyCode == 37) { this.$store.commit('setCurrentTrack', 0) } else if (event.keyCode == 39) { this.$store.commit('setCurrentTrack', this.tracks.length - 1) } else if (event.keyCode == 38) { this.$store.commit('setCurrentRow', 0) } else if (event.keyCode == 40) { this.$store.commit('setCurrentRow', this.patternLength - 1) } else { return }
       } else {
-          if (event.keyCode == 37)
-            this.$store.commit('setCurrentTrack', this.currentTrack - 1)
-          else if (event.keyCode == 39)
-            this.$store.commit('setCurrentTrack', this.currentTrack + 1) 
-          else if (event.keyCode == 38)
-            this.$store.commit('setCurrentRow', this.currentRow - 1) 
-          else if (event.keyCode == 40)
-            this.$store.commit('setCurrentRow', this.currentRow + 1) 
-          else
-            return;    
+        if (event.keyCode == 37) { this.$store.commit('setCurrentTrack', this.currentTrack - 1) } else if (event.keyCode == 39) { this.$store.commit('setCurrentTrack', this.currentTrack + 1) } else if (event.keyCode == 38) { this.$store.commit('setCurrentRow', this.currentRow - 1) } else if (event.keyCode == 40) { this.$store.commit('setCurrentRow', this.currentRow + 1) } else { return }
       }
-      event.preventDefault();
+      event.preventDefault()
     }
   }
 }

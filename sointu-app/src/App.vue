@@ -3,7 +3,7 @@
     <pane>
       <splitpanes horizontal  class="default-theme" style="height: 100vh - 10px">
         <pane><div class="scrolling"><div class="centering"><TrackEditor/></div></div></pane>
-        <pane><div class="scrolling"><div class="centering">1</div></div></pane>
+        <pane><MainControls/></pane>
       </splitpanes>
     </pane>
      <pane>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import MainControls from './components/MainControls.vue'
 import InstrumentEditor from './components/InstrumentEditor.vue'
 import TrackEditor from './components/TrackEditor.vue'
 import PatternEditor from './components/PatternEditor.vue'
@@ -33,6 +34,7 @@ export default {
   name: 'App',
   store,
   components: {
+    MainControls,
     InstrumentEditor,
     TrackEditor,
     PatternEditor,
@@ -55,7 +57,7 @@ export default {
 
 .scrolling {
   overflow: overlay;
-  display: flex; 
+  display: flex;
   width: 100%;
   height: 100%;
 }
@@ -80,11 +82,9 @@ export default {
   background: #333;
 }
 
-
 .splitpanes__pane {
   display: flex;
   font-family: Helvetica, Arial, sans-serif;
-  color: rgba(255, 255, 255, 0.6);
 }
 
 body {
@@ -92,7 +92,5 @@ body {
     padding: 5px;
     background-color: #555;
 }
-
-
 
 </style>
