@@ -117,7 +117,7 @@ export default {
     inputChanged (val) {
       this.activeNames = val
     },
-    foo() {
+    foo () {
       console.log(this.instruments)
     }
   }

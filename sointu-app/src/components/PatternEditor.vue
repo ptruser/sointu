@@ -16,7 +16,17 @@
         </thead>
         <tr v-for="row in Array(patternLength).keys()" :key="row">
             <td class="rownumber">{{row}}</td>
-            <td class="cell" ref="notecell" v-for="(item, index) in tracks" :class="{active:row==currentRow && index==currentTrack}"  :key="index" @mousedown="mousedown(row,index)">{{item[row]}}</td>
+            <td class="cell"
+                ref="notecell"
+                v-for="(item, index) in tracks"
+                :class="{active:row==currentRow && index==currentTrack}"
+                :key="index"
+                @mousedown="mousedown(row,index)"
+            >
+              {{
+                getNote(patterns[item.sequence[currentPattern]][row])
+              }}
+            </td>
         </tr>
     </table>
     </div></div>
@@ -26,9 +36,51 @@
 import draggable from 'vuedraggable'
 import { mapState } from 'vuex'
 
+const KEYMAP = {
+  '90': 60, // z = C-4
+  '83': 61, // s = C#4
+  '88': 62, // x = D-4
+  '68': 63, // d = D#4
+  '67': 64, // c = E-4
+  '86': 65, // v = F-4
+  '71': 66, // g = F#4
+  '66': 67, // b = G-4
+  '72': 68, // h = G#4
+  '78': 69, // n = A-4
+  '74': 70, // j = A#4
+  '77': 71, // m = B-4
+  '188': 72, // , = C-5
+  '76': 73, // l = C#5
+  '190': 74, // . = D-5
+  '192': 75, // ö/semicolon = D#5
+  '189': 78, // - = E#5
+  '81': 72, // q = C-5
+  '50': 73, // 2 = C#5
+  '87': 74, // w = D-5
+  '51': 75, // 3 = D#5
+  '69': 76, // e = E-5
+  '82': 77, // r = F-5
+  '53': 78, // 5 = F#5
+  '84': 79, // t = G-5
+  '54': 80, // 6 = G#5
+  '89': 81, // y = A-5
+  '55': 82, // 7 = A#5
+  '85': 83, // u = B-5
+  '73': 84, // i = C-6
+  '57': 85, // 9 = C#6
+  '79': 86, // o = D-6
+  '48': 87, // 0 = D#6
+  '80': 88, // p = E-6
+  '221': 89, // å = F-6
+  '219': 90, // ` = F#6
+  '186': 91 // ¨ = G-6
+}
+
+const NOTES_IN_OCTAVE = ['C-','C#','D-','D#','E-','E#','F-','F#','G-','G#','A-','A#','B-']
+
 export default {
   computed: mapState([
-    'tracks', 'songLength', 'currentPattern', 'patternLength', 'currentRow', 'currentTrack'
+    'tracks', 'songLength', 'currentPattern', 'patternLength', 'currentRow', 'currentTrack','patterns','holdNote'
   ]),
   components: {
     draggable
@@ -38,6 +90,18 @@ export default {
     currentTrack: function (newTrack) { this.scrollIntoView(this.currentRow, newTrack) }
   },
   methods: {
+    getNote(noteNumber) {
+      if (noteNumber > this.holdNote) {
+        const relNote = noteNumber - 72 // relative to 72 = C-5
+        const relOctave = Math.floor(relNote / 12)
+        const note = NOTES_IN_OCTAVE[relNote % 12]
+        return note + (relOctave + 5)
+      } else if (noteNumber === this.holdNote) {
+        return " "
+      } else {
+        return "---"
+      }
+    },
     mousedown (row, col) {
       this.$store.commit('setCurrentRow', row)
       this.$store.commit('setCurrentTrack', col)
@@ -53,9 +117,33 @@ export default {
     },
     keydown (event) {
       if (event.ctrlKey) {
-        if (event.keyCode == 37) { this.$store.commit('setCurrentTrack', 0) } else if (event.keyCode == 39) { this.$store.commit('setCurrentTrack', this.tracks.length - 1) } else if (event.keyCode == 38) { this.$store.commit('setCurrentRow', 0) } else if (event.keyCode == 40) { this.$store.commit('setCurrentRow', this.patternLength - 1) } else { return }
+        if (event.keyCode == 37) {
+          this.$store.commit('setCurrentTrack', 0)
+        } else if (event.keyCode == 39) {
+          this.$store.commit('setCurrentTrack', this.tracks.length - 1)
+        } else if (event.keyCode == 38) {
+          this.$store.commit('setCurrentRow', 0)
+        } else if (event.keyCode == 40) {
+          this.$store.commit('setCurrentRow', this.patternLength - 1)
+        } else {
+          return
+        }
       } else {
-        if (event.keyCode == 37) { this.$store.commit('setCurrentTrack', this.currentTrack - 1) } else if (event.keyCode == 39) { this.$store.commit('setCurrentTrack', this.currentTrack + 1) } else if (event.keyCode == 38) { this.$store.commit('setCurrentRow', this.currentRow - 1) } else if (event.keyCode == 40) { this.$store.commit('setCurrentRow', this.currentRow + 1) } else { return }
+        if (event.keyCode == 37) {
+          this.$store.commit('setCurrentTrack', this.currentTrack - 1)
+        } else if (event.keyCode == 39) {
+          this.$store.commit('setCurrentTrack', this.currentTrack + 1)
+        } else if (event.keyCode == 38) {
+          this.$store.commit('setCurrentRow', this.currentRow - 1)
+        } else if (event.keyCode == 40) {
+          this.$store.commit('setCurrentRow', this.currentRow + 1)
+        } else if (KEYMAP[event.keyCode] !== undefined) {
+          this.$store.commit('setNote',KEYMAP[event.keyCode])
+        } else if (event.keyCode == 46) {
+          this.$store.commit('setNote',this.$store.state.holdNote)
+        } else {
+          return
+        }
       }
       event.preventDefault()
     }

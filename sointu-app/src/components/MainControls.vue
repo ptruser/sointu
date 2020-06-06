@@ -9,6 +9,14 @@
     RPP:
     <el-input-number v-model="patternLength" :max="255" :min="1"/>
     </p>
+    <p>
+    HLD:
+    <el-input-number v-model="holdNote" :max="255" :min="1"/>
+    </p>
+    <p>
+    Clone patterns:
+    <el-switch v-model="clonePatternwhenChanged"/>
+    </p> 
     </div>
 </template>
 
@@ -31,6 +39,22 @@ export default {
       },
       set (value) {
         this.$store.commit('setBpm', value)
+      }
+    },
+    holdNote: {
+      get () {
+        return this.$store.state.holdNote
+      },
+      set (value) {
+        this.$store.commit('setHoldNote', value)
+      }
+    },
+    clonePatternwhenChanged: {
+      get () {
+        return this.$store.state.clonePatternwhenChanged
+      },
+      set (value) {
+        this.$store.commit('setClonePatternwhenChanged', value)
       }
     },
     ...mapState([
