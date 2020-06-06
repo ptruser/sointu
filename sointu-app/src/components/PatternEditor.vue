@@ -183,16 +183,24 @@ tbody td {
 
 table {
   border-collapse: collapse;
+  border: 1px;
 }
 
-.active {
-border: 1px solid black;
-}
 
 td,
 th {
-  padding: 0.5em;
+  padding: 0px 2px;
+     font: monospace;
+  font-size: 10pt;
+  min-width: 30px;
+  max-width: 30px;
+ border: 1px solid black; 
 }
+
+td.active {
+  background: #FFF;
+}
+
 .rownumber {
     background-color: #AAA;
 }

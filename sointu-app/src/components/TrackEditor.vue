@@ -70,6 +70,8 @@ table {
 td,
 th {
   padding: 0.5em;
+  font: "DejaVu Sans Mono",monospace;
+  font-size: 10pt;
 }
 .rownumber {
     background-color: #AAA;
