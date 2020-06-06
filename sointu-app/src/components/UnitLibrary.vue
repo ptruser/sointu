@@ -1,41 +1,9 @@
 <template>
-  <div class="row">
-    <el-tabs type="card" addable>
-  <el-tab-pane
-    v-for="(item, index) in instruments"
-    :key="item.name"
-    :label="item.name+index"
-    :name="'tab'+index"/>
-  {{index}}
-</el-tabs>
-    <div class="col-7">
-      <draggable
-        tag="el-collapse"
-        :list="list"
-        group="opcodes"
-        :component-data="collapseComponentData"
-         handle=".handle"
-      >
-        <el-collapse-item
-          v-for="item in list"
-          :key="item.id"
-          :name="item.id"
-        >
-        <template slot="title">
-          <div> <i class="fa fa-align-justify handle"></i></div>
-          <div>{{ item.title }}</div><div class="title">Information TBW</div>
-        </template>
-          <Envelope :key="item.id+100"/>
-        </el-collapse-item>
-      </draggable>
-    </div>
-
-    <div class="col-3" @click="foo">
-      <draggable
-        class="dragArea list-group"
-        :list="library"
-        :group="{ name: 'opcodes', pull: 'clone', put: false }"
-      >
+  <draggable
+    class="dragArea list-group"
+    :list="library"
+    :group="{ name: 'opcodes', pull: 'clone', put: false }"
+  >
         <div
           class="list-group-item"
           v-for="element in library"
@@ -43,10 +11,7 @@
         >
           {{ element.title }}
         </div>
-             </draggable>
-    </div>
-
-  </div>
+  </draggable>
 </template>
 
 <script>

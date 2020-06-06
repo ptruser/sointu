@@ -1,12 +1,18 @@
 <template>
 <div class="scrolling" ref="patternPane"><div class="centering">
     <table tabindex="2" @keydown="keydown">
+            <thead>
+          <th class="cell">Inst</th>
+          <th class="instrumentLabel" style="background-color:#444" :colspan="item.voices" v-for="(item, index) in instruments" :key="index" scope="col">
+          Instr{{index}}
+          </th>
+        </thead>  
         <thead>
             <draggable v-model="tracks" tag="tr">
                 <th class="cell" :key="-1">
                    #
                 </th>
-                <th class="cell" v-for="(item, index) in tracks" :key="index" scope="col">
+                <th class="cell" :colspan="item.voices"  v-for="(item, index) in tracks" :key="index" scope="col">
                 {{ index }}
                 </th>
                 <th class="cell" :key="124125">
@@ -14,11 +20,13 @@
                  </th>
             </draggable>
         </thead>
+
         <tr v-for="row in Array(patternLength).keys()" :key="row">
             <td class="rownumber">{{row}}</td>
             <td class="cell"
                 ref="notecell"
                 v-for="(item, index) in tracks"
+                :colspan="item.voices" 
                 :class="{active:row==currentRow && index==currentTrack}"
                 :key="index"
                 @mousedown="mousedown(row,index)"
@@ -35,6 +43,7 @@
 <script>
 import draggable from 'vuedraggable'
 import { mapState } from 'vuex'
+import mod from '../helpers'
 
 const KEYMAP = {
   '90': 60, // z = C-4
@@ -80,7 +89,7 @@ const NOTES_IN_OCTAVE = ['C-','C#','D-','D#','E-','E#','F-','F#','G-','G#','A-',
 
 export default {
   computed: mapState([
-    'tracks', 'songLength', 'currentPattern', 'patternLength', 'currentRow', 'currentTrack','patterns','holdNote'
+    'tracks', 'songLength', 'currentPattern', 'patternLength', 'currentRow', 'currentTrack','patterns','holdNote','instruments'
   ]),
   components: {
     draggable
@@ -94,7 +103,7 @@ export default {
       if (noteNumber > this.holdNote) {
         const relNote = noteNumber - 72 // relative to 72 = C-5
         const relOctave = Math.floor(relNote / 12)
-        const note = NOTES_IN_OCTAVE[relNote % 12]
+        const note = NOTES_IN_OCTAVE[mod(relNote,12)]
         return note + (relOctave + 5)
       } else if (noteNumber === this.holdNote) {
         return " "
@@ -207,5 +216,9 @@ td.active {
 
 .cell {
     background-color: #888;
+}
+
+.instrumentLabel {
+  font-size: 6pt;
 }
 </style>

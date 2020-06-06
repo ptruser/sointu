@@ -1,4 +1,5 @@
 <template>
+<div>
     <table tabindex="1">
         <thead>
 
@@ -17,6 +18,8 @@
             <td class="cell" v-for="(item, index) in tracks" :key="index" >{{item.sequence[row]}}</td>
         </tr>
     </table>
+    <button @click="$store.commit('setSongLength',songLength+1)">Add</button>
+</div>
 </template>
 
 <script>
@@ -65,6 +68,7 @@ tbody td {
 
 table {
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 td,

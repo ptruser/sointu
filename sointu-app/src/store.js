@@ -1,23 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import _ from 'lodash'
+import mod from './helpers'
 
 Vue.use(Vuex)
 
 const debug = process.env.NODE_ENV !== 'production'
 
 const DEFAULT_INSTRUMENT = {
-  voices: 1,
+  voices: 3,
   name: 'Default Instrument',
   patch: [{ type: 'envelope', stereo: false, attack: 64, decay: 64, sustain: 64, release: 64, gain: 128 },
     { type: 'oscillator', stereo: false, transpose: 64, detune: 64, phase: 0, color: 128, shape: 64, gain: 128 },
     { type: 'mulp', stereo: false },
     { type: 'pan', stereo: false, panning: 64 },
     { type: 'out', stereo: true, gain: 64 }]
-}
-
-function mod (n, m) { // ensures only positive values
-  return ((n % m) + m) % m
 }
 
 function isPatternUnique(state,pattern) {
@@ -35,7 +32,7 @@ function firstFreePattern(state) {
 export default new Vuex.Store({
   state: {
     patterns: [new Array(16).fill(0)],
-    tracks: [{ voices: 1, sequence: [0] }],
+    tracks: [{ voices: 2, sequence: [0] }],
     instruments: [_.cloneDeep(DEFAULT_INSTRUMENT), _.cloneDeep(DEFAULT_INSTRUMENT)],
     songLength: 1,
     patternLength: 16,
@@ -51,7 +48,7 @@ export default new Vuex.Store({
       state.instruments.push(_.cloneDeep(DEFAULT_INSTRUMENT))
     },
     addTrack (state) {
-      state.tracks.push({ voices: 1, sequence: [0] })
+      state.tracks.push({ voices: 1, sequence: new Array(state.songLength).fill(0) })
     },
     setNote (state, note) {
       const seq = state.tracks[state.currentTrack].sequence
@@ -80,6 +77,18 @@ export default new Vuex.Store({
     },
     setBpm (state, bpm) {
       state.bpm = bpm
+    },
+    setSongLength(state,value) {
+      state.songLength = value
+      state.tracks.forEach(x => {
+        const seq = x.sequence
+        if (seq.length < value) {
+          const lastval = seq[seq.length-1]
+          for(let j = seq.length;j < value;j++) {
+            seq.push(lastval)   
+          }
+        }
+      })
     }
   },
   strict: debug
