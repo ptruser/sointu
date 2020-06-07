@@ -37,6 +37,7 @@ export default new Vuex.Store({
     songLength: 1,
     patternLength: 16,
     currentPattern: 0,
+    octave: 5,
     currentRow: 0,
     currentTrack: 0,
     clonePatternwhenChanged: false,
@@ -89,6 +90,9 @@ export default new Vuex.Store({
     },
     setBpm (state, bpm) {
       state.bpm = bpm
+    },
+    setOctave (state, octave) {
+      state.octave = octave
     },
     setSongLength(state,value) {
       state.songLength = value

@@ -7,10 +7,10 @@
       </splitpanes>
     </pane>
      <pane>
-      <splitpanes horizontal  class="default-theme" style="height: 100vh - 10px">
-        <pane><PatternEditor/></pane>
-        <pane><div class="scrolling"><div class="centering">Keyboard</div></div></pane>
-      </splitpanes>
+        <div class="centerContainer">
+          <div class="patternEditorContainer"><PatternEditor/></div>
+          <div class="keyboardContainer"><Keyboard/></div>
+        </div>
     </pane>
      <pane>
       <splitpanes horizontal  class="default-theme" style="height: 100vh - 10px">
@@ -26,6 +26,7 @@ import MainControls from './components/MainControls.vue'
 import InstrumentEditor from './components/InstrumentEditor.vue'
 import TrackEditor from './components/TrackEditor.vue'
 import PatternEditor from './components/PatternEditor.vue'
+import Keyboard from './components/Keyboard.vue'
 import { Splitpanes, Pane } from 'splitpanes'
 import 'splitpanes/dist/splitpanes.css'
 import store from './store.js'
@@ -39,6 +40,7 @@ export default {
     TrackEditor,
     PatternEditor,
     Splitpanes,
+    Keyboard,
     Pane
   }
 }
@@ -63,7 +65,7 @@ export default {
 }
 
 .centering {
- margin: auto;
+ margin: 0 auto;
 }
 
 .scrolling::-webkit-scrollbar {
@@ -91,6 +93,21 @@ body {
     margin: 0px;
     padding: 5px;
     background-color: #555;
+}
+
+.centerContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.patternEditorContainer {
+  flex: 1 1 auto;
+}
+
+.keyboardContainer {
+  flex: 0 0 auto;
+  background-color: chartreuse;
 }
 
 </style>
