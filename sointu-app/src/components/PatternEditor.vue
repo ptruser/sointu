@@ -27,7 +27,7 @@
                 ref="notecell"
                 v-for="(item, index) in tracks"
                 :colspan="item.voices" 
-                :class="{active:row==currentRow && index==currentTrack}"
+                :class="{active:row==currentRow && index==currentTrack,unique: !$store.getters.isPatternUnique(item.sequence[currentPattern])}"
                 :key="index"
                 @mousedown="mousedown(row,index)"
             >
@@ -206,6 +206,11 @@ th {
  border: 1px solid black; 
 }
 
+
+td.unique {
+  background-color: blueviolet;
+}
+
 td.active {
   background: #FFF;
 }
@@ -213,6 +218,7 @@ td.active {
 .rownumber {
     background-color: #AAA;
 }
+
 
 .cell {
     background-color: #888;

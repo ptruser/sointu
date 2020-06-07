@@ -60,11 +60,23 @@ export default new Vuex.Store({
       }
       Vue.set(state.patterns[seq[state.currentPattern]],state.currentRow,note)
     },
+    setPattern (state, newPtrn) {
+      const seq = state.tracks[state.currentTrack].sequence
+      Vue.set(seq, state.currentPattern, newPtrn)
+      if (newPtrn >= state.patterns.length) {
+        for(let j = state.patterns.length;j < newPtrn+1;j++) {
+          state.patterns.push(new Array(state.patternLength).fill(0))   
+        }
+      }
+    },
     setCurrentRow (state, newRow) {
       state.currentRow = mod(newRow, state.patternLength)
     },
     setCurrentTrack (state, newTrack) {
       state.currentTrack = mod(newTrack, state.tracks.length)
+    },
+    setCurrentPattern (state, value) {
+      state.currentPattern = mod(value, state.songLength)
     },
     setPatternLength (state, patternLength) {
       state.patternLength = patternLength
@@ -90,6 +102,9 @@ export default new Vuex.Store({
         }
       })
     }
+  },
+  getters: {
+    isPatternUnique: state => pattern => isPatternUnique(state,pattern)
   },
   strict: debug
 })

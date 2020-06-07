@@ -1,14 +1,36 @@
 <template>
-  <div class="row">
-    <el-tabs type="card" addable>
-  <el-tab-pane
-    v-for="(item, index) in instruments"
-    :key="item.name"
-    :label="item.name+index"
-    :name="'tab'+index"/>
-  {{index}}
-</el-tabs>
-    <div class="col-7">
+  <div class="mypane">
+    <div class="propertiesDiv">
+
+
+      <el-row :gutter="20">
+        <el-col :span="6">Name</el-col>
+        <el-col :span="18"><el-input
+          placeholder="Unnamed instrument"
+          v-model="input">
+        </el-input>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="20">
+        <el-col :span="6">Voices</el-col>
+        <el-col :span="18"><el-input-number v-model="voices" :max="32" :min="1"/></el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="18">
+          <i class="el-icon-s-fold"/>
+          <i class="el-icon-s-unfold"/>   
+        </el-col>   
+        <el-col :span="5">
+          <i class="el-icon-delete"/>
+        </el-col>
+
+      </el-row>  
+
+    </div>
+
+    <div class="scrolling col-7">
       <draggable
         tag="el-collapse"
         :list="list"
@@ -130,6 +152,18 @@ export default {
 }
 .title {
   color: #999;
+}
+div.propertiesDiv {
+  top: 0;
+  background-color: #999;
+  z-index: 2;
+  width: 100%;
+}
+
+.mypane {
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
 }
 
 </style>

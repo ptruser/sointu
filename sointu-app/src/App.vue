@@ -14,7 +14,7 @@
     </pane>
      <pane>
       <splitpanes horizontal  class="default-theme" style="height: 100vh - 10px">
-        <pane><div class="scrolling"><div class="centering"><InstrumentEditor/></div></div></pane>
+        <pane><InstrumentEditor/></pane>
         <pane><div class="scrolling"><div class="centering"></div></div></pane>
       </splitpanes>
     </pane>
