@@ -62,6 +62,7 @@ export default new Vuex.Store({
       Vue.set(state.patterns[seq[state.currentPattern]],state.currentRow,note)
     },
     setPattern (state, newPtrn) {
+      newPtrn = Math.max(newPtrn,0)   
       const seq = state.tracks[state.currentTrack].sequence
       Vue.set(seq, state.currentPattern, newPtrn)
       if (newPtrn >= state.patterns.length) {

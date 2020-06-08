@@ -43,7 +43,7 @@ export default {
 
 <style scoped>
 div.container {
-    width: 100%;    
+    width: 100%;   
 }
 
 div.alignMiddle {
@@ -64,6 +64,7 @@ canvas {
     padding: 0;
     margin: 0;
     transition: .3s height ease-in-out;  
+    background-color: brown;
 }
 
 canvas.collapsed {

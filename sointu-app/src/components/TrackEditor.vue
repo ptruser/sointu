@@ -75,6 +75,10 @@ export default {
           this.$store.commit('setPattern',event.keyCode - 48)
         } else if (event.keyCode >= 65 && event.keyCode <= 90) { // 65 = A, 66 = B, ..., 90 = Z
           this.$store.commit('setPattern',event.keyCode - 55) // A = 10
+        } else if (event.keyCode === 107) {  // numpadAdd
+          this.$store.commit('setPattern',this.tracks[this.currentTrack].sequence[this.currentPattern]+1)
+        } else if (event.keyCode === 109) {  // numpadAdd
+          this.$store.commit('setPattern',this.tracks[this.currentTrack].sequence[this.currentPattern]-1)          
         } else {
           return
         }

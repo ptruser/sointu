@@ -1,5 +1,5 @@
 <template>
-  <div class="mypane">
+  <div class="mypane" style="width: 400px; min-width: 400px;">
     <div class="propertiesDiv">
 
 
@@ -161,7 +161,8 @@ div.propertiesDiv {
 }
 
 .mypane {
-  width: 100%;
+  width: 400px;
+  max-width: 400px;
   padding: 0px;
   margin: 0px;
 }

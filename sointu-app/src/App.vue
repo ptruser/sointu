@@ -7,16 +7,15 @@
       </splitpanes>
     </pane>
      <pane>
-        <div class="centerContainer">
-          <div class="patternEditorContainer"><PatternEditor/></div>
-          <div class="keyboardContainer"><Keyboard/></div>
+       <div id="rowContainer">
+        <div id="rowCellLeft">
+          <div id="columnContainer">
+            <div id="columnCellTop"><PatternEditor/></div>
+            <div id="columnCellBottom"><Keyboard/></div>
+          </div>
         </div>
-    </pane>
-     <pane>
-      <splitpanes horizontal  class="default-theme" style="height: 100vh - 10px">
-        <pane><InstrumentEditor/></pane>
-        <pane><div class="scrolling"><div class="centering"></div></div></pane>
-      </splitpanes>
+        <div id="rowCellRight"><InstrumentEditor/></div>
+      </div>
     </pane>
   </splitpanes>
 </template>
@@ -95,19 +94,35 @@ body {
     background-color: #555;
 }
 
-.centerContainer {
-  display: flex;
+#rowContainer {
+  display: flex;  
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  align-items: stretch;
+}
+
+#rowCellLeft {
+  flex: 1 1 auto;  
+}
+
+#rowCellRight {
+  flex: 0 0 auto;
+}
+
+#columnContainer {
+  display: flex;  
   flex-direction: column;
+  height: 100%;
   width: 100%;
 }
 
-.patternEditorContainer {
-  flex: 1 1 auto;
+#columnCellTop {
+  flex: 1 1 auto;  
 }
 
-.keyboardContainer {
-  flex: 0 0 auto;
-  background-color: chartreuse;
+#columnCellBottom {
+  flex: 0 0 auto;  
 }
 
 </style>

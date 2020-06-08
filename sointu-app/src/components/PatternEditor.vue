@@ -1,5 +1,5 @@
 <template>
-<div class="scrolling" ref="patternPane"><div class="centering">
+<div class="scrolling" ref="patternPane">
     <table tabindex="2" @keydown="keydown">
             <thead>
           <th class="cell">Inst</th>
@@ -13,7 +13,7 @@
                    #
                 </th>
                 <th class="cell" :colspan="item.voices"  v-for="(item, index) in tracks" :key="index" scope="col">
-                {{ index }}
+                {{ item.sequence[currentPattern] }}
                 </th>
                 <th class="cell" :key="124125">
                     <button @click="$store.commit('addTrack')">Add</button>
@@ -37,7 +37,7 @@
             </td>
         </tr>
     </table>
-    </div></div>
+  </div>
 </template>
 
 <script>
