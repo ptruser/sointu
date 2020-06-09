@@ -1,5 +1,4 @@
 <template>
-<div class="scrolling" ref="patternPane">
     <table tabindex="2" @keydown="keydown">
             <thead>
           <th class="cell">Inst</th>
@@ -37,7 +36,6 @@
             </td>
         </tr>
     </table>
-  </div>
 </template>
 
 <script>

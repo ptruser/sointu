@@ -7,14 +7,12 @@
       </splitpanes>
     </pane>
      <pane>
-       <div id="rowContainer">
-        <div id="rowCellLeft">
-          <div id="columnContainer">
-            <div id="columnCellTop"><PatternEditor/></div>
-            <div id="columnCellBottom"><Keyboard/></div>
-          </div>
+       <div id="mainContainer">
+        <div>
+          <div class="scrolling"><PatternEditor/></div>
+          <div><Keyboard/></div>
         </div>
-        <div id="rowCellRight"><InstrumentEditor/></div>
+        <div class="scrolling"><InstrumentEditor/></div>
       </div>
     </pane>
   </splitpanes>
@@ -52,15 +50,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
    width: 100%;
-     display: flex;
-     flex-wrap: wrap;
-}
-
-.scrolling {
-  overflow: overlay;
-  display: flex;
-  width: 100%;
-  height: 100%;
 }
 
 .centering {
@@ -94,7 +83,8 @@ body {
     background-color: #555;
 }
 
-#rowContainer {
+#mainContainer {
+  position: relative;
   display: flex;  
   flex-direction: row;
   height: 100%;
@@ -102,26 +92,26 @@ body {
   align-items: stretch;
 }
 
-#rowCellLeft {
-  flex: 1 1 auto;  
-}
-
-#rowCellRight {
+#mainContainer > :nth-child(2) {
   flex: 0 0 auto;
+  overflow-y: overlay;   
+  overflow-x: hidden;
 }
 
-#columnContainer {
-  display: flex;  
+#mainContainer > :first-child {
+  flex: 1 1 auto;  
   flex-direction: column;
-  height: 100%;
-  width: 100%;
+  min-width: 0;
+  display: flex;    
 }
 
-#columnCellTop {
+#mainContainer > :first-child > :first-child {
+  overflow: overlay;
   flex: 1 1 auto;  
 }
 
-#columnCellBottom {
+#mainContainer > :first-child > :nth-child(2) {
+  overflow: hidden;  
   flex: 0 0 auto;  
 }
 

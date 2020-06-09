@@ -1,21 +1,21 @@
 <template>
-    <div class="container">
-      <div class="alignCenter" @click="collapsed=!collapsed">
-        <div class="alignMiddle">
-          <el-tooltip content="Decrease octave. Shortcut: <" open-delay="1000" placement="top">
-            <i class="el-icon-caret-left" @click.stop="octave--"/>
-          </el-tooltip>
-        </div>
-        <div class="alignMiddle" style="width: 70px">Octave: {{octave}}</div>
-        <div class="alignMiddle">
-          <el-tooltip content="Increase octave. Shortcut: >" open-delay="1000" placement="top">
-            <i class="el-icon-caret-right" @click.stop="octave++"/>
-          </el-tooltip>
-        </div>
-        <div class="alignMiddle"><i class="el-icon-"/></div>
+  <div id="container">
+    <div class="alignCenter" @click="collapsed=!collapsed">
+      <div class="alignMiddle">
+        <el-tooltip content="Decrease octave. Shortcut: <" open-delay="1000" placement="top">
+          <i class="el-icon-caret-left" @click.stop="octave--"/>
+        </el-tooltip>
       </div>
-      <canvas class="canvas" :class="{collapsed:collapsed}"/>
+      <div class="alignMiddle" style="width: 70px">Octave: {{octave}}</div>
+      <div class="alignMiddle">
+        <el-tooltip content="Increase octave. Shortcut: >" open-delay="1000" placement="top">
+          <i class="el-icon-caret-right" @click.stop="octave++"/>
+        </el-tooltip>
+      </div>
+      <div class="alignMiddle"><i class="el-icon-"/></div>
     </div>
+    <canvas class="canvas" :class="{collapsed:collapsed}"/>
+  </div>
 </template>
 
 <script>
@@ -42,8 +42,9 @@ export default {
 </script>
 
 <style scoped>
-div.container {
-    width: 100%;   
+#container {
+    width: 100%; 
+      
 }
 
 div.alignMiddle {
