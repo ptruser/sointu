@@ -8,29 +8,8 @@
     </div>
     <div id="collapseDiv" :class="{collapsed:collapsed}">
       <div id="properties">
-        <el-row :gutter="20">
-          <el-col :span="6">Name</el-col>
-          <el-col :span="18"><el-input
-            placeholder="Unnamed instrument">
-          </el-input>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :span="6">Voices</el-col>
-          <el-col :span="18"><el-input-number v-model="voices" :max="32" :min="1"/></el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="18">
-            <i class="el-icon-s-fold"/>
-            <i class="el-icon-s-unfold"/>
-          </el-col>
-          <el-col :span="5">
-            <i class="el-icon-delete"/>
-          </el-col>
-
-        </el-row>
+        <el-input id="instrumentName" placeholder="Unnamed instrument"/>
+            <i class="icon el-icon-delete"/>
 
       </div>
 
@@ -180,7 +159,7 @@ export default {
 }
 
 .icon {
-  font-size: 125%;
+  font-size: 30pt;
 }
 
 div.propertiesDiv {
@@ -188,6 +167,7 @@ div.propertiesDiv {
   background-color: #999;
   z-index: 2;
   width: 100%;
+  display: block;
 }
 
 #container {
@@ -208,6 +188,11 @@ div.propertiesDiv {
   display: flex;
   flex-direction: column;  
   overflow: hidden;
+}
+
+#instrumentName {
+  float: left;
+  width: 100px;
 }
 
 #properties {
