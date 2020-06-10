@@ -22,8 +22,7 @@ import { mapState } from 'vuex'
 
 export default {
   components: {
-    draggable,
-    Envelope
+    draggable
   },
   data () {
     return {

@@ -15,8 +15,8 @@
         </thead>
         <tr v-for="row in Array(songLength).keys()" :key="row">
             <td class="rownumber">{{row}}</td>
-            <td class="cell" 
-                :class="{active:row==currentPattern && index==currentTrack}" 
+            <td class="cell"
+                :class="{active:row==currentPattern && index==currentTrack}"
                 v-for="(item, index) in tracks"
                 :key="index"
             >{{patternToString(item.sequence[row])}}</td>
@@ -32,13 +32,13 @@ import { mapState } from 'vuex'
 
 export default {
   computed: mapState([
-    'tracks', 'songLength', 'currentPattern','currentTrack'
+    'tracks', 'songLength', 'currentPattern', 'currentTrack'
   ]),
   components: {
     draggable
   },
   methods: {
-    patternToString(patternNumber) {
+    patternToString (patternNumber) {
       if (patternNumber <= 9) {
         return String(patternNumber)
       } else if (patternNumber <= 35) {
@@ -72,13 +72,13 @@ export default {
         } else if (event.keyCode == 40) {
           this.$store.commit('setCurrentPattern', this.currentPattern + 1)
         } else if (event.keyCode >= 48 && event.keyCode <= 57) { // 48 = 0, 49 = 1, ..., 57 = 9
-          this.$store.commit('setPattern',event.keyCode - 48)
+          this.$store.commit('setPattern', event.keyCode - 48)
         } else if (event.keyCode >= 65 && event.keyCode <= 90) { // 65 = A, 66 = B, ..., 90 = Z
-          this.$store.commit('setPattern',event.keyCode - 55) // A = 10
-        } else if (event.keyCode === 107) {  // numpadAdd
-          this.$store.commit('setPattern',this.tracks[this.currentTrack].sequence[this.currentPattern]+1)
-        } else if (event.keyCode === 109) {  // numpadAdd
-          this.$store.commit('setPattern',this.tracks[this.currentTrack].sequence[this.currentPattern]-1)          
+          this.$store.commit('setPattern', event.keyCode - 55) // A = 10
+        } else if (event.keyCode === 107) { // numpadAdd
+          this.$store.commit('setPattern', this.tracks[this.currentTrack].sequence[this.currentPattern] + 1)
+        } else if (event.keyCode === 109) { // numpadAdd
+          this.$store.commit('setPattern', this.tracks[this.currentTrack].sequence[this.currentPattern] - 1)
         } else {
           return
         }

@@ -23,10 +23,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 export default {
   name: 'Keyboard',
-  data() {
+  data () {
     return {
       collapsed: false
-    };
+    }
   },
   computed: {
     octave: {
@@ -43,8 +43,8 @@ export default {
 
 <style scoped>
 #container {
-    width: 100%; 
-      
+    width: 100%;
+
 }
 
 div.alignMiddle {
@@ -64,7 +64,7 @@ canvas {
     height: 150px;
     padding: 0;
     margin: 0;
-    transition: .3s height ease-in-out;  
+    transition: .3s height ease-in-out;
     background-color: brown;
 }
 

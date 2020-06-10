@@ -2,12 +2,12 @@
   <div id="container">
     <div @click="collapsed=!collapsed">
       <div class="icon" id="arrow" :class="{collapsed:collapsed}"><i class="el-icon-arrow-right"/></div>
-      <div class="icon"><i class="el-icon-s-fold"/></div>      
-      <div class="icon"><i class="el-icon-s-unfold"/></div>          
+      <div class="icon"><i class="el-icon-s-fold"/></div>
+      <div class="icon"><i class="el-icon-s-unfold"/></div>
       <div class="label">Instrument editor</div>
     </div>
     <div id="collapseDiv" :class="{collapsed:collapsed}">
-      <div class="propertiesDiv">
+      <div id="properties">
         <el-row :gutter="20">
           <el-col :span="6">Name</el-col>
           <el-col :span="18"><el-input
@@ -24,17 +24,19 @@
         <el-row>
           <el-col :span="18">
             <i class="el-icon-s-fold"/>
-            <i class="el-icon-s-unfold"/>   
-          </el-col>   
+            <i class="el-icon-s-unfold"/>
+          </el-col>
           <el-col :span="5">
             <i class="el-icon-delete"/>
           </el-col>
 
-        </el-row>  
+        </el-row>
 
       </div>
 
-      <div class="scrolling col-7">
+      <splitpanes horizontal  class="default-theme units">
+
+      <pane class="scrolling">
         <draggable
           tag="el-collapse"
           :list="list"
@@ -54,12 +56,13 @@
             <Envelope :key="item.id+100"/>
           </el-collapse-item>
         </draggable>
-      </div>
+      </pane>
 
-      <div class="col-3" @click="foo">
+      <pane class="scrolling">
         <draggable
           class="dragArea list-group"
           :list="library"
+          :clone="clone"  
           :group="{ name: 'opcodes', pull: 'clone', put: false }"
         >
           <div
@@ -70,25 +73,33 @@
             {{ element.title }}
           </div>
               </draggable>
-      </div>
+        </pane>
+
+      </splitpanes>
     </div>
   </div>
 </template>
 
 <script>
 import 'element-ui/lib/theme-chalk/index.css'
+import 'splitpanes/dist/splitpanes.css'
 import draggable from 'vuedraggable'
 import Envelope from './Envelope'
+import { Splitpanes, Pane } from 'splitpanes'
 import { mapState } from 'vuex'
+import _ from 'lodash'
 
 export default {
   components: {
     draggable,
-    Envelope
+    Envelope,
+    Splitpanes,
+    Pane
   },
   data () {
     return {
       collapsed: false,
+      runningId: 100,
       list: [
         {
           title: 'Consistency',
@@ -145,6 +156,9 @@ export default {
     },
     foo () {
       console.log(this.instruments)
+    },
+    clone: function(obj) {
+      return { id: this.runningId++, title: obj.title }
     }
   }
 }
@@ -180,7 +194,7 @@ div.propertiesDiv {
   height: 100%;
   display: flex;
   flex-direction: row;
-  align-items: stretch;  
+  align-items: stretch;
 }
 
 #container > :first-child {
@@ -189,8 +203,27 @@ div.propertiesDiv {
 }
 
 #collapseDiv {
-  width: 400px;
-  transition: .5s width ease-in-out;    
+  width: 500px;
+  transition: .5s width ease-in-out;
+  display: flex;
+  flex-direction: column;  
+  overflow: hidden;
+}
+
+#properties {
+  flex: 0 0 auto;
+}
+
+#units {
+  flex: 1 1 500px;
+  min-width: 0px;  
+}
+
+.splitpanes__pane {
+  display: flex;
+  min-width: 0px;
+  overflow-y: overlay;
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 #collapseDiv.collapsed {
@@ -198,7 +231,7 @@ div.propertiesDiv {
 }
 
 #arrow {
-  transition: .5s transform ease-in-out; 
+  transition: .5s transform ease-in-out;
 }
 
 #arrow.collapsed {

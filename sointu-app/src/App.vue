@@ -85,7 +85,7 @@ body {
 
 #mainContainer {
   position: relative;
-  display: flex;  
+  display: flex;
   flex-direction: row;
   height: 100%;
   width: 100%;
@@ -94,25 +94,25 @@ body {
 
 #mainContainer > :nth-child(2) {
   flex: 0 0 auto;
-  overflow-y: overlay;   
+  overflow-y: overlay;
   overflow-x: hidden;
 }
 
 #mainContainer > :first-child {
-  flex: 1 1 auto;  
+  flex: 1 1 auto;
   flex-direction: column;
   min-width: 0;
-  display: flex;    
+  display: flex;
 }
 
 #mainContainer > :first-child > :first-child {
   overflow: overlay;
-  flex: 1 1 auto;  
+  flex: 1 1 auto;
 }
 
 #mainContainer > :first-child > :nth-child(2) {
-  overflow: hidden;  
-  flex: 0 0 auto;  
+  overflow: hidden;
+  flex: 0 0 auto;
 }
 
 </style>

@@ -16,7 +16,7 @@
     <p>
     Clone patterns:
     <el-switch v-model="clonePatternwhenChanged"/>
-    </p> 
+    </p>
     </div>
 </template>
 
