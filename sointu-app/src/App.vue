@@ -1,12 +1,12 @@
 <template>
   <splitpanes vertical  class="default-theme" style="width: 100%; height: calc(100vh - 10px)">
-    <pane>
+    <pane size="20">
       <splitpanes horizontal  class="default-theme" style="height: 100vh - 10px">
         <pane><div class="scrolling"><div class="centering"><TrackEditor/></div></div></pane>
         <pane><MainControls/></pane>
       </splitpanes>
     </pane>
-     <pane>
+     <pane  size="90">
        <div id="mainContainer">
         <div>
           <div class="scrolling"><PatternEditor/></div>
@@ -44,6 +44,10 @@ export default {
 </script>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

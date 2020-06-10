@@ -2,54 +2,55 @@
   <div id="container">
     <div @click="collapsed=!collapsed">
       <div class="icon" id="arrow" :class="{collapsed:collapsed}"><i class="el-icon-arrow-right"/></div>
-      <div class="icon"><i class="el-icon-s-fold"/></div>
-      <div class="icon"><i class="el-icon-s-unfold"/></div>
+      <div class="icon" @click.stop="fold"><i class="el-icon-s-fold"/></div>
+      <div class="icon" @click.stop="unfold"><i class="el-icon-s-unfold"/></div>
+      <div class="icon" @click.stop="addInstrument"><i class="el-icon-plus"/></div>      
+      <div class="icon" @click.stop="deleteInstrument"><i class="el-icon-delete"/></div>       
       <div class="label">Instrument editor</div>
     </div>
     <div id="collapseDiv" :class="{collapsed:collapsed}">
       <div id="properties">
         <el-input id="instrumentName" placeholder="Unnamed instrument"/>
-            <i class="icon el-icon-delete"/>
-
       </div>
 
       <splitpanes horizontal  class="default-theme units">
 
-      <pane class="scrolling">
+      <pane class="scrolling" id="instrumentPane">
         <draggable
           tag="el-collapse"
-          :list="list"
+          :list="units"
           group="opcodes"
           :component-data="collapseComponentData"
           handle=".handle"
         >
           <el-collapse-item
-            v-for="item in list"
+            v-for="item in units"
+            class="unit"
             :key="item.id"
             :name="item.id"
           >
-          <template slot="title">
-            <div> <i class="fa fa-align-justify handle"></i></div>
-            <div>{{ item.title }}</div><div class="title">Information TBW</div>
-          </template>
-            <Envelope :key="item.id+100"/>
+              <template slot="title">
+                <div> <i class="fa fa-align-justify handle"></i></div>
+                <div>{{ item.type }}</div><div class="title">{{ item.attack }}</div>
+              </template>
+            <Envelope/>
           </el-collapse-item>
         </draggable>
       </pane>
 
-      <pane class="scrolling">
+      <pane class="scrolling" id="unitPane">
         <draggable
           class="dragArea list-group"
-          :list="library"
+          :list="Object.keys(library)"
           :clone="clone"  
           :group="{ name: 'opcodes', pull: 'clone', put: false }"
         >
           <div
             class="list-group-item"
-            v-for="element in library"
-            :key="element.title"
+            v-for="element in Object.keys(library)"
+            :key="element"
           >
-            {{ element.title }}
+            {{ element }}
           </div>
               </draggable>
         </pane>
@@ -67,6 +68,13 @@ import Envelope from './Envelope'
 import { Splitpanes, Pane } from 'splitpanes'
 import { mapState } from 'vuex'
 import _ from 'lodash'
+import Vue from 'vue'
+import { defaultUnits,defaultInstrument } from '../units'
+
+var startingInstrument = _.cloneDeep(defaultInstrument)
+startingInstrument.forEach((x,i) => {
+  startingInstrument[i].id = i
+})
 
 export default {
   components: {
@@ -79,42 +87,7 @@ export default {
     return {
       collapsed: false,
       runningId: 100,
-      list: [
-        {
-          title: 'Consistency',
-          id: 1
-        },
-        {
-          title: 'Feedback',
-          id: 2
-        },
-        {
-          title: 'Efficiency',
-          id: 3
-        },
-        {
-          title: 'Controllability',
-          id: 4
-        }
-      ],
-      library: [
-        {
-          title: 'Consistency',
-          id: 1
-        },
-        {
-          title: 'Feedback',
-          id: 2
-        },
-        {
-          title: 'Efficiency',
-          id: 3
-        },
-        {
-          title: 'Controllability',
-          id: 4
-        }
-      ],
+      units: startingInstrument,
       activeNames: [1],
       collapseComponentData: {
         on: {
@@ -123,7 +96,8 @@ export default {
         props: {
           value: this.activeNames
         }
-      }
+      },
+      library: _.cloneDeep(defaultUnits),
     }
   },
   computed: mapState([
@@ -138,6 +112,25 @@ export default {
     },
     clone: function(obj) {
       return { id: this.runningId++, title: obj.title }
+    },
+    fold() {
+      while(this.activeNames.length > 0)
+        this.activeNames.pop();
+      this.collapsed = false;
+    },
+    unfold() {
+      while(this.activeNames.length > 0)
+        this.activeNames.pop();
+      this.list.forEach(element => {
+        this.activeNames.push(element.id)
+      });
+      this.collapsed = false;
+    },
+    addInstrument() {
+
+    },
+    deleteInstrument() {
+
     }
   }
 }
@@ -155,19 +148,22 @@ export default {
 .label {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
+  margin: auto;
   height: 50%;
+  color: #999;
 }
 
 .icon {
   font-size: 30pt;
+  color: #999;
 }
 
-div.propertiesDiv {
-  top: 0;
-  background-color: #999;
-  z-index: 2;
-  width: 100%;
-  display: block;
+.icon:hover {
+  color: #fff;
+}
+
+.unit {
+  width: 400px;
 }
 
 #container {
@@ -175,11 +171,14 @@ div.propertiesDiv {
   display: flex;
   flex-direction: row;
   align-items: stretch;
+  background-color: #444;
 }
 
 #container > :first-child {
   flex: 0 0 auto;
   font-size: 14pt;
+  border: 1px none black; 
+  border-left-style: solid;  
 }
 
 #collapseDiv {
@@ -197,11 +196,16 @@ div.propertiesDiv {
 
 #properties {
   flex: 0 0 auto;
+  margin: 5px; 
 }
 
 #units {
   flex: 1 1 500px;
-  min-width: 0px;  
+  min-width: 0px;   
+}
+
+#instrumentPane {
+  background-color: #000;
 }
 
 .splitpanes__pane {
@@ -209,6 +213,10 @@ div.propertiesDiv {
   min-width: 0px;
   overflow-y: overlay;
   font-family: Helvetica, Arial, sans-serif;
+}
+
+#instrumentPane {
+  background-color: #444;
 }
 
 #collapseDiv.collapsed {
