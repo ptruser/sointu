@@ -114,13 +114,13 @@ export default {
       this.$store.commit('setCurrentTrack', col)
     },
     scrollIntoView (row, col) {
-      const el = this.$refs.notecell[col + row * this.tracks.length]
+      /*const el = this.$refs.notecell[col + row * this.tracks.length]
       const div = this.$refs.patternPane
       const m = 50
       const newTop = Math.min(Math.max(div.scrollTop, el.offsetTop + el.offsetHeight - div.offsetHeight), el.offsetTop)
       div.scrollTop = newTop
       const newLeft = Math.min(Math.max(div.scrollLeft, el.offsetLeft + el.offsetHeight - div.offsetWidth), el.offsetLeft)
-      div.scrollLeft = newLeft
+      div.scrollLeft = newLeft*/
     },
     keydown (event) {
       if (event.ctrlKey) {

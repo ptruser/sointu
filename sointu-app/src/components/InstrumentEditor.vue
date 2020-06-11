@@ -1,12 +1,24 @@
 <template>
-  <div id="container">
+  <div id="container" class="sidePane">
     <div @click="collapsed=!collapsed">
-      <div class="icon" id="arrow" :class="{collapsed:collapsed}"><i class="el-icon-arrow-right"/></div>
+      <div class="icon"><i :class="{collapsed:collapsed}" class="collapseIcon el-icon-arrow-right"/></div>
       <div class="icon" @click.stop="fold"><i class="el-icon-s-fold"/></div>
       <div class="icon" @click.stop="unfold"><i class="el-icon-s-unfold"/></div>
       <div class="icon" @click.stop="addInstrument"><i class="el-icon-plus"/></div>      
-      <div class="icon" @click.stop="deleteInstrument"><i class="el-icon-delete"/></div>       
-      <div class="label">Instrument editor</div>
+      <div class="icon" @click.stop="deleteInstrument">
+        <template>
+        <el-popconfirm
+          confirmButtonText='OK'
+          cancelButtonText='No'
+          icon="el-icon-info"
+          iconColor="red"
+          title="Are you sure to delete this instrument?"
+        >
+          <i slot="reference" class="el-icon-delete"/>
+        </el-popconfirm>
+        </template>
+      </div>       
+      <div class="label paneTitle">Instrument editor</div>
     </div>
     <div id="collapseDiv" :class="{collapsed:collapsed}">
       <div id="properties">
@@ -141,6 +153,7 @@ export default {
   padding-top: 8px;
   padding-bottom: 8px;
 }
+
 .title {
   color: #999;
 }
@@ -148,18 +161,7 @@ export default {
 .label {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  margin: auto;
-  height: 50%;
-  color: #999;
-}
-
-.icon {
-  font-size: 30pt;
-  color: #999;
-}
-
-.icon:hover {
-  color: #fff;
+  margin: auto;  
 }
 
 .unit {
@@ -171,12 +173,10 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  background-color: #444;
 }
 
 #container > :first-child {
   flex: 0 0 auto;
-  font-size: 14pt;
   border: 1px none black; 
   border-left-style: solid;  
 }
@@ -221,14 +221,6 @@ export default {
 
 #collapseDiv.collapsed {
   width: 0px;
-}
-
-#arrow {
-  transition: .5s transform ease-in-out;
-}
-
-#arrow.collapsed {
-  transform: rotate(-90deg);
 }
 
 </style>

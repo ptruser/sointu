@@ -119,4 +119,31 @@ body {
   flex: 0 0 auto;
 }
 
+.icon {
+  font-size: 30pt;
+  color: #999;
+}
+
+.icon:hover {
+  color: #fff;
+}
+
+.paneTitle {
+  color: #999;
+  font-size: 14pt;  
+  user-select: none;
+}
+
+.collapseIcon {
+  transition: .5s transform ease-in-out;
+}
+
+.collapseIcon.collapsed {
+  transform: rotate(-90deg);
+}
+
+.sidePane {
+  background-color: #444;
+}
+
 </style>
