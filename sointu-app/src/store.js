@@ -51,6 +51,14 @@ export default new Vuex.Store({
     addTrack (state) {
       state.tracks.push({ voices: 1, sequence: new Array(state.songLength).fill(0) })
     },
+    deleteTrack (state) {
+      if (state.tracks.length > 1) {
+        state.tracks.splice(state.currentTrack,1)
+        if (state.currentTrack >= state.tracks.length) {
+          state.currentTrack--;
+        }
+      }
+    },
     setNote (state, note) {
       const seq = state.tracks[state.currentTrack].sequence
       const oldPtrn = seq[state.currentPattern]

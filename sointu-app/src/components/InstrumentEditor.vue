@@ -4,7 +4,7 @@
       <div class="icon"><i :class="{collapsed:collapsed}" class="collapseIcon el-icon-arrow-right"/></div>
       <div class="icon" @click.stop="fold"><i class="el-icon-s-fold"/></div>
       <div class="icon" @click.stop="unfold"><i class="el-icon-s-unfold"/></div>
-      <div class="icon" @click.stop="addInstrument"><i class="el-icon-plus"/></div>      
+      <div class="icon" @click.stop="addInstrument"><i class="el-icon-document-add"/></div>      
       <div class="icon" @click.stop="deleteInstrument">
         <template>
         <el-popconfirm
@@ -42,8 +42,9 @@
             :name="item.id"
           >
               <template slot="title">
-                <div> <i class="fa fa-align-justify handle"></i></div>
-                <div>{{ item.type }}</div><div class="title">{{ item.attack }}</div>
+                <div><i class="fa fa-align-justify handle"></i></div>
+                <div>{{ item.type }}</div>
+                <div class="title">{{ item.attack }}</div>
               </template>
             <Envelope/>
           </el-collapse-item>
@@ -73,7 +74,7 @@
 </template>
 
 <script>
-import 'element-ui/lib/theme-chalk/index.css'
+
 import 'splitpanes/dist/splitpanes.css'
 import draggable from 'vuedraggable'
 import Envelope from './Envelope'
@@ -150,8 +151,6 @@ export default {
 <style scoped>
 .handle {
   float: left;
-  padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .title {
@@ -165,7 +164,10 @@ export default {
 }
 
 .unit {
-  width: 400px;
+  width: 405px;
+  border-radius: 5px;
+  background-color: #999;
+  margin: 2px 0px;
 }
 
 #container {
@@ -182,7 +184,7 @@ export default {
 }
 
 #collapseDiv {
-  width: 500px;
+  width: 420px;
   transition: .5s width ease-in-out;
   display: flex;
   flex-direction: column;  

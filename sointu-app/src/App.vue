@@ -1,5 +1,6 @@
 <template>
-  <splitpanes vertical  class="default-theme" style="width: 100%; height: calc(100vh - 10px)">
+<div id="main">
+  <splitpanes vertical class="default-theme" style="width: 100%; height: calc(100vh - 10px)">
     <pane size="20">
       <splitpanes horizontal  class="default-theme" style="height: 100vh - 10px">
         <pane><div class="scrolling"><div class="centering"><TrackEditor/></div></div></pane>
@@ -16,6 +17,7 @@
       </div>
     </pane>
   </splitpanes>
+  </div>
 </template>
 
 <script>
@@ -27,6 +29,13 @@ import Keyboard from './components/Keyboard.vue'
 import { Splitpanes, Pane } from 'splitpanes'
 import 'splitpanes/dist/splitpanes.css'
 import store from './store.js'
+
+import 'element-ui/lib/theme-chalk/icon.css'
+import 'element-ui/lib/theme-chalk/input.css'
+import 'element-ui/lib/theme-chalk/input-number.css'
+import 'element-ui/lib/theme-chalk/popconfirm.css'
+import 'element-ui/lib/theme-chalk/popover.css'
+import 'element-ui/lib/theme-chalk/collapse-item.css'
 
 export default {
   name: 'App',
@@ -46,6 +55,11 @@ export default {
 <style>
 * {
   box-sizing: border-box;
+}
+
+#main {
+  width: 100%;
+  height: 100%;
 }
 
 #app {

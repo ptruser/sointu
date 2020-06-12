@@ -1,4 +1,38 @@
 <template>
+<div id="main">
+    <div id="titleContainer">
+      <div class="titleElement paneTitle">Pattern editor</div>
+      <div class="titleElement">
+        <el-tooltip content="Add parallel track. Shortcut: ctrl-T" :open-delay="1000" placement="top">
+          <i class="icon el-icon-document-add" @click.stop="$store.commit('addTrack')"/>
+        </el-tooltip>
+      </div>
+      <div class="titleElement">
+        <template>
+        <el-popconfirm
+          confirmButtonText='OK'
+          cancelButtonText='No'
+          icon="el-icon-info"
+          iconColor="red"
+          title="Are you sure to delete this track?"
+          :disabled="tracks.length <= 1"
+          @onConfirm="$store.commit('deleteTrack')"
+        >
+          <i slot="reference" class="icon el-icon-delete"/>
+        </el-popconfirm>
+        </template>
+      </div>        
+      <div class="titleElement">
+        BPM:<el-input-number class="input" size="mini" v-model="bpm" :max="300" :min="10" controls-position="right"/>
+      </div> 
+      <div class="titleElement">
+        RPP:<el-input-number class="input" size="mini" v-model="rpp" :max="300" :min="10"/>
+      </div> 
+       <div class="titleElement">
+        LPB:<el-input-number class="input" size="mini" v-model="lpp" :max="16" :min="2"/>
+      </div>            
+    </div>
+
     <table tabindex="2" @keydown="keydown">
             <thead>
           <th class="cell">Inst</th>
@@ -14,9 +48,6 @@
                 <th class="cell" :colspan="item.voices"  v-for="(item, index) in tracks" :key="index" scope="col">
                 {{ item.sequence[currentPattern] }}
                 </th>
-                <th class="cell" :key="124125">
-                    <button @click="$store.commit('addTrack')">Add</button>
-                 </th>
             </draggable>
         </thead>
 
@@ -36,6 +67,7 @@
             </td>
         </tr>
     </table>
+    </div>
 </template>
 
 <script>
@@ -160,6 +192,11 @@ export default {
 
 <style scoped>
 
+#main {
+  width: 100%;
+  height: 100%;
+}
+
 thead th {
   position: -webkit-sticky; /* for Safari */
   position: sticky;
@@ -222,4 +259,29 @@ td.active {
 .instrumentLabel {
   font-size: 6pt;
 }
+
+#titleContainer {
+    white-space: nowrap;    
+    width: 100%;    
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+#titleContainer > :nth-child(1) {
+  margin: 5px;
+  margin-right: 20px;
+}
+
+div.titleElement {
+    display: inline-block;
+    vertical-align: middle;
+    white-space: normal;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.input {
+  width: 90px;
+}
+
 </style>

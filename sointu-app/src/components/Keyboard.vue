@@ -1,13 +1,13 @@
 <template>
   <div id="container" class="sidePane">
     <div id="titleContainer" @click="collapsed=!collapsed">
-      <div class="titleElement paneTitle">Keyboard</div>
+       <div class="titleElement paneTitle">Keyboard</div>        
       <div class="titleElement">
         <el-tooltip content="Decrease octave. Shortcut: <" :open-delay="1000" placement="top">
           <i class="icon el-icon-caret-left" @click.stop="octave--"/>
         </el-tooltip>
       </div>
-      <div class="titleElement paneTitle" style="width: 100px">Octave: {{octave}}</div>
+      <div class="titleElement paneTitle">Octave: {{octave}}</div>
       <div class="titleElement">
         <el-tooltip content="Increase octave. Shortcut: >" :open-delay="1000" placement="top">
           <i class="icon el-icon-caret-right" @click.stop="octave++"/>
@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import 'element-ui/lib/theme-chalk/index.css'
 
 export default {
   name: 'Keyboard',
@@ -65,6 +64,13 @@ div.titleElement {
     width: 100%;    
     overflow-x: hidden;
     overflow-y: hidden;
+}
+
+
+
+#titleContainer > :nth-child(1) {
+  margin: 5px;
+  margin-right: 20px;
 }
 
 #titleContainer > :nth-child(5) {
