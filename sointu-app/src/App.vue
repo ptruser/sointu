@@ -36,6 +36,7 @@ import 'element-ui/lib/theme-chalk/input-number.css'
 import 'element-ui/lib/theme-chalk/popconfirm.css'
 import 'element-ui/lib/theme-chalk/popover.css'
 import 'element-ui/lib/theme-chalk/collapse-item.css'
+import 'element-ui/lib/theme-chalk/tooltip.css'
 
 export default {
   name: 'App',
