@@ -1,7 +1,7 @@
 <template>
   <div id="container" class="sidePane">
     <div id="titleContainer" @click="collapsed=!collapsed">
-       <div class="titleElement paneTitle">Keyboard</div>        
+      <div class="titleElement paneTitle">Keyboard</div>        
       <div class="titleElement">
         <el-tooltip content="Decrease octave. Shortcut: <" :open-delay="1000" placement="top">
           <i class="icon el-icon-caret-left" @click.stop="octave--"/>
@@ -13,6 +13,11 @@
           <i class="icon el-icon-caret-right" @click.stop="octave++"/>
         </el-tooltip>
       </div>      
+      <div class="titleElement">
+        <el-tooltip content="Short cut: A" :open-delay="1000" placement="top">    
+          <el-button size="mini" type="primary">Note off</el-button>  
+        </el-tooltip>
+      </div>
       <div class="titleElement">
         <el-tooltip content="Collapse" :open-delay="1000" placement="top">
           <i :class="{collapsed:collapsed}" class="collapseIcon icon el-icon-arrow-down"/>
@@ -27,7 +32,9 @@
           :class="{black: key.black, white: !key.black}"
           :key="index"
           :style="`left: ${key.left}px; top: 0px; width: ${key.width}px; height: ${key.height}px`"
-        >{{key.label}}
+        >
+          <div class="keyText keyHint">{{key.hint}}</div>
+          <div class="keyText keyLabel">{{key.label}}</div>
         </div>
       </div>
     </div>
@@ -82,7 +89,8 @@ export default {
         const key = _.clone(octaveKeys[relKeyNo])
         key.left += octave*280
         const hint = keyboardShortCuts[(x-60)-(this.$store.state.octave-5)*12]
-        key.label = (hint ? hint : '') + (relKeyNo == 0 ? 'C'+octave : '')
+        key.hint = hint ? hint : ''
+        key.label = (relKeyNo == 0 ? 'C'+octave : '')
         return key
       })
     }
@@ -92,34 +100,38 @@ export default {
 
 <style scoped>
 #container {
+  border: 1px none black; 
+  border-top-style: solid;  
   width: 100%;
   min-width: 320px;        
 }
 
 div.titleElement {
-  display: inline-block;
   vertical-align: middle;
   white-space: normal;
   margin-top: auto;
   margin-bottom: auto;
+  flex: 0 0 auto;
 }
 
 #titleContainer {
-  white-space: nowrap;    
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   width: 100%;    
   overflow-x: hidden;
   overflow-y: hidden;
 }
 
-
-
 #titleContainer > :nth-child(1) {
-  margin: 5px;
+  margin-left: 5px;
   margin-right: 20px;
 }
 
-#titleContainer > :nth-child(5) {
-  float: right;
+#titleContainer > :nth-child(6) {
+  flex: 1 1 auto;
+  margin-left: auto;
+ text-align: right;
 }
 
 #keyboardFrame {
@@ -129,7 +141,6 @@ div.titleElement {
   padding: 0;
   margin: 0;
   transition: .5s height ease-in-out;
-  background-color: ;
 }
 
 #keyboardFrame.collapsed {
@@ -149,8 +160,24 @@ div.titleElement {
   text-align: center;
 }
 
-.key.white {
-  padding-top: 130px;
+.keyText {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+}
+
+.white > .keyHint {
+  color: #AAA;
+  top: 104px;
+}
+
+.keyLabel {
+  top: 127px;
+}
+
+.black > .keyHint {
+  color: #444;  
+  top: 80px;
 }
 
 .key.black {

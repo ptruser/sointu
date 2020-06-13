@@ -2,10 +2,7 @@
 <div id="main">
   <splitpanes vertical class="default-theme" style="width: 100%; height: calc(100vh - 10px)">
     <pane size="20">
-      <splitpanes horizontal  class="default-theme" style="height: 100vh - 10px">
-        <pane><div class="scrolling"><div class="centering"><TrackEditor/></div></div></pane>
-        <pane><MainControls/></pane>
-      </splitpanes>
+      <div class="scrolling"><div class="centering"><TrackEditor/></div></div>
     </pane>
      <pane  size="90">
        <div id="mainContainer">
@@ -30,13 +27,15 @@ import { Splitpanes, Pane } from 'splitpanes'
 import 'splitpanes/dist/splitpanes.css'
 import store from './store.js'
 
-import 'element-ui/lib/theme-chalk/icon.css'
-import 'element-ui/lib/theme-chalk/input.css'
-import 'element-ui/lib/theme-chalk/input-number.css'
-import 'element-ui/lib/theme-chalk/popconfirm.css'
-import 'element-ui/lib/theme-chalk/popover.css'
-import 'element-ui/lib/theme-chalk/collapse-item.css'
-import 'element-ui/lib/theme-chalk/tooltip.css'
+// import 'element-ui/lib/theme-chalk/icon.css'
+// import 'element-ui/lib/theme-chalk/input.css'
+// import 'element-ui/lib/theme-chalk/input-number.css'
+// import 'element-ui/lib/theme-chalk/popconfirm.css'
+// import 'element-ui/lib/theme-chalk/popover.css'
+// import 'element-ui/lib/theme-chalk/collapse-item.css'
+// import 'element-ui/lib/theme-chalk/tooltip.css'
+
+import 'element-ui/lib/theme-chalk/index.css'
 
 export default {
   name: 'App',
@@ -94,6 +93,10 @@ export default {
 .splitpanes__pane {
   display: flex;
   font-family: Helvetica, Arial, sans-serif;
+}
+
+.splitpanes.default-theme .splitpanes__splitter {
+  background-color: #fff;
 }
 
 body {
@@ -158,7 +161,7 @@ body {
 }
 
 .sidePane {
-  background-color: #444;
+  background-color: #222;
 }
 
 </style>
