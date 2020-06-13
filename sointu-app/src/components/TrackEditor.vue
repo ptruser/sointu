@@ -1,5 +1,16 @@
 <template>
 <div>
+  <div id="titleContainer" class="paneTitle">
+      <div>Sequencer</div>
+      <div>
+        <el-tooltip content="Add parallel track. Shortcut: ctrl-T" :open-delay="1000" placement="top">
+          <i class="icon el-icon-document-add" @click.stop="$store.commit('setSongLength',songLength+1)"/>
+        </el-tooltip>
+      </div>
+      <div>
+        <i class="icon el-icon-delete" @click.stop="$store.commit('setSongLength',songLength-1)"/>
+      </div>
+    </div>
     <table tabindex="1" @keydown="keydown">
         <thead>
 
@@ -22,7 +33,6 @@
             >{{patternToString(item.sequence[row])}}</td>
         </tr>
     </table>
-    <button @click="$store.commit('setSongLength',songLength+1)">Add</button>
 </div>
 </template>
 
@@ -90,6 +100,23 @@ export default {
 </script>
 
 <style scoped>
+
+#titleContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+#titleContainer > div {
+  vertical-align: middle;
+  white-space: normal;
+  margin-top: auto;
+  margin-bottom: auto;
+  flex: 0 0 auto;
+}
 
 thead th {
   position: -webkit-sticky; /* for Safari */

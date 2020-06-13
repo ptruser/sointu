@@ -1,7 +1,7 @@
 <template>
   <div id="container" class="sidePane">
     <div id="titleContainer" @click="collapsed=!collapsed">
-      <div class="titleElement paneTitle">Keyboard</div>        
+      <div class="titleElement paneTitle">Keyboard</div>
       <div class="titleElement">
         <el-tooltip content="Decrease octave. Shortcut: <" :open-delay="1000" placement="top">
           <i class="icon el-icon-caret-left" @click.stop="octave--"/>
@@ -12,17 +12,17 @@
         <el-tooltip content="Increase octave. Shortcut: >" :open-delay="1000" placement="top">
           <i class="icon el-icon-caret-right" @click.stop="octave++"/>
         </el-tooltip>
-      </div>      
+      </div>
       <div class="titleElement">
-        <el-tooltip content="Short cut: A" :open-delay="1000" placement="top">    
-          <el-button size="mini" type="primary">Note off</el-button>  
+        <el-tooltip content="Short cut: A" :open-delay="1000" placement="top">
+          <el-button size="mini" type="primary">Note off</el-button>
         </el-tooltip>
       </div>
       <div class="titleElement">
         <el-tooltip content="Collapse" :open-delay="1000" placement="top">
           <i :class="{collapsed:collapsed}" class="collapseIcon icon el-icon-arrow-down"/>
         </el-tooltip>
-      </div>      
+      </div>
     </div>
     <div id="keyboardFrame" :class="{collapsed:collapsed}">
       <div id="keyboard" :style="`left: ${keyboardPosition}px`">
@@ -49,18 +49,18 @@ const octaveKeys = [
   { left: 0, width: 40, height: 150, black: false }, // C
   { left: 25, width: 23, height: 100, black: true }, // C#
   { left: 40, width: 40, height: 150, black: false }, // D
-  { left: 72, width: 23, height: 100, black: true }, // D#  
+  { left: 72, width: 23, height: 100, black: true }, // D#
   { left: 80, width: 40, height: 150, black: false }, // E
   { left: 120, width: 40, height: 150, black: false }, // F
-  { left: 143, width: 23, height: 100, black: true }, // F#    
+  { left: 143, width: 23, height: 100, black: true }, // F#
   { left: 160, width: 40, height: 150, black: false }, // G
-  { left: 188.5, width: 23, height: 100, black: true }, // F#    
+  { left: 188.5, width: 23, height: 100, black: true }, // F#
   { left: 200, width: 40, height: 150, black: false }, // A
-  { left: 234, width: 23, height: 100, black: true }, // F#      
-  { left: 240, width: 40, height: 150, black: false }, // B
+  { left: 234, width: 23, height: 100, black: true }, // F#
+  { left: 240, width: 40, height: 150, black: false } // B
 ]
 
-const keyboardShortCuts = ['Z','S','X','D','C','V','G','B','H','N','J','M','Q','2','W','3','E','R','5','T','6','Y','7','U','I','9','O','0','P']
+const keyboardShortCuts = ['Z', 'S', 'X', 'D', 'C', 'V', 'G', 'B', 'H', 'N', 'J', 'M', 'Q', '2', 'W', '3', 'E', 'R', '5', 'T', '6', 'Y', '7', 'U', 'I', '9', 'O', '0', 'P']
 
 export default {
   name: 'Keyboard',
@@ -75,22 +75,22 @@ export default {
         return this.$store.state.octave
       },
       set (value) {
-        value = Math.min(Math.max(value,0),20)
+        value = Math.min(Math.max(value, 0), 20)
         this.$store.commit('setOctave', value)
       }
     },
-    keyboardPosition: function() {
-      return -(this.$store.state.octave-1)*280
+    keyboardPosition: function () {
+      return -(this.$store.state.octave - 1) * 280
     },
-    keys: function() {
-      return _.range(this.$store.state.holdNote+1,256).map(x => {
-        const relKeyNo = mod(x,12)
-        const octave = Math.floor((x-72)/12)+5 // 72 = middle C = C5
+    keys: function () {
+      return _.range(this.$store.state.holdNote + 1, 256).map(x => {
+        const relKeyNo = mod(x, 12)
+        const octave = Math.floor((x - 72) / 12) + 5 // 72 = middle C = C5
         const key = _.clone(octaveKeys[relKeyNo])
-        key.left += octave*280
-        const hint = keyboardShortCuts[(x-60)-(this.$store.state.octave-5)*12]
-        key.hint = hint ? hint : ''
-        key.label = (relKeyNo == 0 ? 'C'+octave : '')
+        key.left += octave * 280
+        const hint = keyboardShortCuts[(x - 60) - (this.$store.state.octave - 5) * 12]
+        key.hint = hint || ''
+        key.label = (relKeyNo == 0 ? 'C' + octave : '')
         return key
       })
     }
@@ -100,10 +100,10 @@ export default {
 
 <style scoped>
 #container {
-  border: 1px none black; 
-  border-top-style: solid;  
+  border: 1px none black;
+  border-top-style: solid;
   width: 100%;
-  min-width: 320px;        
+  min-width: 320px;
 }
 
 div.titleElement {
@@ -118,7 +118,7 @@ div.titleElement {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  width: 100%;    
+  width: 100%;
   overflow-x: hidden;
   overflow-y: hidden;
 }
@@ -154,9 +154,9 @@ div.titleElement {
 
 .key {
   position: absolute;
-  border: 1px none black; 
-  border-style: solid;  
-  background-color: #fff;  
+  border: 1px none black;
+  border-style: solid;
+  background-color: #fff;
   text-align: center;
 }
 
@@ -176,7 +176,7 @@ div.titleElement {
 }
 
 .black > .keyHint {
-  color: #444;  
+  color: #444;
   top: 80px;
 }
 

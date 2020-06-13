@@ -53,9 +53,9 @@ export default new Vuex.Store({
     },
     deleteTrack (state) {
       if (state.tracks.length > 1) {
-        state.tracks.splice(state.currentTrack,1)
+        state.tracks.splice(state.currentTrack, 1)
         if (state.currentTrack >= state.tracks.length) {
-          state.currentTrack--;
+          state.currentTrack--
         }
       }
     },

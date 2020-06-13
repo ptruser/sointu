@@ -4,7 +4,7 @@
       <div class="icon"><i :class="{collapsed:collapsed}" class="collapseIcon el-icon-arrow-right"/></div>
       <div class="icon" @click.stop="fold"><i class="el-icon-s-fold"/></div>
       <div class="icon" @click.stop="unfold"><i class="el-icon-s-unfold"/></div>
-      <div class="icon" @click.stop="addInstrument"><i class="el-icon-document-add"/></div>      
+      <div class="icon" @click.stop="addInstrument"><i class="el-icon-document-add"/></div>
       <div class="icon" @click.stop="deleteInstrument">
         <template>
         <el-popconfirm
@@ -17,7 +17,7 @@
           <i slot="reference" class="el-icon-delete"/>
         </el-popconfirm>
         </template>
-      </div>       
+      </div>
       <div class="label paneTitle">Instrument editor</div>
     </div>
     <div id="collapseDiv" :class="{collapsed:collapsed}">
@@ -55,7 +55,7 @@
         <draggable
           class="dragArea list-group"
           :list="Object.keys(library)"
-          :clone="clone"  
+          :clone="clone"
           :group="{ name: 'opcodes', pull: 'clone', put: false }"
         >
           <div
@@ -75,17 +75,16 @@
 
 <script>
 
-import 'splitpanes/dist/splitpanes.css'
 import draggable from 'vuedraggable'
 import Envelope from './Envelope'
 import { Splitpanes, Pane } from 'splitpanes'
 import { mapState } from 'vuex'
 import _ from 'lodash'
 import Vue from 'vue'
-import { defaultUnits,defaultInstrument } from '../units'
+import { defaultUnits, defaultInstrument } from '../units'
 
 var startingInstrument = _.cloneDeep(defaultInstrument)
-startingInstrument.forEach((x,i) => {
+startingInstrument.forEach((x, i) => {
   startingInstrument[i].id = i
 })
 
@@ -110,7 +109,7 @@ export default {
           value: this.activeNames
         }
       },
-      library: _.cloneDeep(defaultUnits),
+      library: _.cloneDeep(defaultUnits)
     }
   },
   computed: mapState([
@@ -123,26 +122,24 @@ export default {
     foo () {
       console.log(this.instruments)
     },
-    clone: function(obj) {
+    clone: function (obj) {
       return { id: this.runningId++, title: obj.title }
     },
-    fold() {
-      while(this.activeNames.length > 0)
-        this.activeNames.pop();
-      this.collapsed = false;
+    fold () {
+      while (this.activeNames.length > 0) { this.activeNames.pop() }
+      this.collapsed = false
     },
-    unfold() {
-      while(this.activeNames.length > 0)
-        this.activeNames.pop();
+    unfold () {
+      while (this.activeNames.length > 0) { this.activeNames.pop() }
       this.list.forEach(element => {
         this.activeNames.push(element.id)
-      });
-      this.collapsed = false;
+      })
+      this.collapsed = false
     },
-    addInstrument() {
+    addInstrument () {
 
     },
-    deleteInstrument() {
+    deleteInstrument () {
 
     }
   }
@@ -160,7 +157,7 @@ export default {
 .label {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  margin: auto;  
+  margin: auto;
 }
 
 .unit {
@@ -179,15 +176,15 @@ export default {
 
 #container > :first-child {
   flex: 0 0 auto;
-  border: 1px none black; 
-  border-left-style: solid;  
+  border: 1px none black;
+  border-left-style: solid;
 }
 
 #collapseDiv {
   width: 420px;
   transition: .5s width ease-in-out;
   display: flex;
-  flex-direction: column;  
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -198,12 +195,12 @@ export default {
 
 #properties {
   flex: 0 0 auto;
-  margin: 5px; 
+  margin: 5px;
 }
 
 #units {
   flex: 1 1 500px;
-  min-width: 0px;   
+  min-width: 0px;
 }
 
 #instrumentPane {

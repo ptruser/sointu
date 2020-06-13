@@ -21,16 +21,16 @@
           <i slot="reference" class="icon el-icon-delete"/>
         </el-popconfirm>
         </template>
-      </div>        
+      </div>
       <div class="titleElement">
         BPM:<el-input-number class="input" size="mini" v-model="bpm" :max="300" :min="10" controls-position="right"/>
-      </div> 
+      </div>
       <div class="titleElement">
         RPP:<el-input-number class="input" size="mini" v-model="rpp" :max="300" :min="10"/>
-      </div> 
+      </div>
        <div class="titleElement">
         LPB:<el-input-number class="input" size="mini" v-model="lpp" :max="16" :min="2"/>
-      </div>            
+      </div>
     </div>
 
     <table tabindex="2" @keydown="keydown">
@@ -146,13 +146,13 @@ export default {
       this.$store.commit('setCurrentTrack', col)
     },
     scrollIntoView (row, col) {
-      /*const el = this.$refs.notecell[col + row * this.tracks.length]
+      /* const el = this.$refs.notecell[col + row * this.tracks.length]
       const div = this.$refs.patternPane
       const m = 50
       const newTop = Math.min(Math.max(div.scrollTop, el.offsetTop + el.offsetHeight - div.offsetHeight), el.offsetTop)
       div.scrollTop = newTop
       const newLeft = Math.min(Math.max(div.scrollLeft, el.offsetLeft + el.offsetHeight - div.offsetWidth), el.offsetLeft)
-      div.scrollLeft = newLeft*/
+      div.scrollLeft = newLeft */
     },
     keydown (event) {
       if (event.ctrlKey) {
@@ -261,8 +261,8 @@ td.active {
 }
 
 #titleContainer {
-    white-space: nowrap;    
-    width: 100%;    
+    white-space: nowrap;
+    width: 100%;
     overflow-x: hidden;
     overflow-y: hidden;
 }

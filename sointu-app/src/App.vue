@@ -96,13 +96,13 @@ export default {
 }
 
 .splitpanes.default-theme .splitpanes__splitter {
-  background-color: #fff;
+  background-color: #333;
 }
 
 body {
     margin: 0px;
     padding: 5px;
-    background-color: #555;
+    background-color: #333;
 }
 
 #mainContainer {
@@ -148,7 +148,7 @@ body {
 
 .paneTitle {
   color: #999;
-  font-size: 14pt;  
+  font-size: 14pt;
   user-select: none;
 }
 
