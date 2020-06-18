@@ -21,6 +21,7 @@ function getPixelRatio (context) {
 export default {
   name: 'Slider',
   props: {
+    value: { type: Number, default: 64},
     ticks: { type: Array, default: () => [0, 16, 32, 48, 64, 80, 96, 112, 128] },
     max: { type: Number, default: 128 },
     min: { type: Number, default: 0 },
@@ -31,8 +32,7 @@ export default {
     return {
       dragging: false,
       message: 'Slider',
-      vueCanvas: null,
-      value: 64
+      vueCanvas: null
     }
   },
   watch: {
@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     setValue (newValue) {
-      this.value = Math.min(Math.max(Math.round(newValue), this.min), this.max)
+      this.$emit('update:value',Math.min(Math.max(Math.round(newValue), this.min), this.max))
     },
     keydown (event) {
       var dir

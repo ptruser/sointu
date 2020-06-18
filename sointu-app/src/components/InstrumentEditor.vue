@@ -41,12 +41,18 @@
             :key="item.id"
             :name="item.id"
           >
-              <template slot="title">
-                <div><i class="fa fa-align-justify handle"></i></div>
-                <div>{{ item.type }}</div>
-                <div class="title">{{ item.attack }}</div>
-              </template>
-            <Envelope/>
+            <template slot="title">
+              <div><i class="fa fa-align-justify handle"></i></div>
+              <div>{{ unitTitle(item) }}</div>
+              <div class="title">{{ titleForItem(item) }}</div>
+              <div v-if="'stereo' in item" class="stereo" @click="stopPropagation"><el-switch v-model="item.stereo"/></div>   
+            </template>
+            <table>
+              <tr v-for="(value,key,index) in valsForItem(item)" :key="index">
+                <td>{{titleForKey(key)}}</td>
+                <td><component :is="componentForKey(key)" v-bind:value.sync="item[key]"/></td>
+              </tr>
+            </table>
           </el-collapse-item>
         </draggable>
       </pane>
@@ -76,7 +82,7 @@
 <script>
 
 import draggable from 'vuedraggable'
-import Envelope from './Envelope'
+import Slider from './Slider'
 import { Splitpanes, Pane } from 'splitpanes'
 import { mapState } from 'vuex'
 import _ from 'lodash'
@@ -91,7 +97,6 @@ startingInstrument.forEach((x, i) => {
 export default {
   components: {
     draggable,
-    Envelope,
     Splitpanes,
     Pane
   },
@@ -112,9 +117,13 @@ export default {
       library: _.cloneDeep(defaultUnits)
     }
   },
-  computed: mapState([
+  computed: {
+    unitComponents: function() {
+      return this.units.map(x => componentMapping[x.type])
+    },
+    ...mapState([
     'instruments'
-  ]),
+  ])},
   methods: {
     inputChanged (val) {
       this.activeNames = val
@@ -122,19 +131,40 @@ export default {
     foo () {
       console.log(this.instruments)
     },
-    clone: function (obj) {
-      return { id: this.runningId++, title: obj.title }
+    clone: function (key) {
+      console.log(key)
+      return {
+        id: this.runningId++, 
+        ...this.library[key]
+      }
     },
     fold () {
       while (this.activeNames.length > 0) { this.activeNames.pop() }
       this.collapsed = false
     },
     unfold () {
-      while (this.activeNames.length > 0) { this.activeNames.pop() }
-      this.list.forEach(element => {
-        this.activeNames.push(element.id)
+      this.fold()
+      this.units.forEach(unit => {
+        this.activeNames.push(unit.id)
       })
-      this.collapsed = false
+    },
+    unitTitle(unit) {
+      return _.capitalize(unit.type)
+    },
+    titleForKey(key) {
+      return _.capitalize(key)
+    },
+    componentForKey(key) {
+      return Slider
+    },
+    valsForItem(item) {
+      return _.omit(item,['title','stereo','id','type'])
+    },
+    titleForItem(item) {
+      return Object.entries(_.omit(item,['title','stereo','id','type'])).map(([key,val]) => key[0].toUpperCase() + val).join(" ");
+    },
+    stopPropagation(e) {
+      e.stopPropagation()
     },
     addInstrument () {
 

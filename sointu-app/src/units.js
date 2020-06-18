@@ -38,7 +38,7 @@ const defaultUnits = {
     stereo: false,
     transpose: 64,
     detune: 64,
-    phaseofs: 64,
+    phaseofs: 0,
     color: 64,
     shape: 64,
     gain: 64,
