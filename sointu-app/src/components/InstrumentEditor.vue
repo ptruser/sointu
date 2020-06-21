@@ -1,6 +1,6 @@
 <template>
   <div id="container" class="sidePane">
-    <div @click="collapsed=!collapsed">
+    <div @click="collapsed=!collapsed" id="sidebar">
       <div class="icon"><i :class="{collapsed:collapsed}" class="collapseIcon el-icon-arrow-right"/></div>
       <div class="icon" @click.stop="fold"><i class="el-icon-s-fold"/></div>
       <div class="icon" @click.stop="unfold"><i class="el-icon-s-unfold"/></div>
@@ -59,13 +59,13 @@
 
       <pane class="scrolling" id="unitPane">
         <draggable
-          class="dragArea list-group"
           :list="Object.keys(library)"
+          :sort="false"
           :clone="clone"
           :group="{ name: 'opcodes', pull: 'clone', put: false }"
         >
           <div
-            class="list-group-item"
+            class="libraryItem"
             v-for="element in Object.keys(library)"
             :key="element"
           >
@@ -190,11 +190,15 @@ export default {
   margin: auto;
 }
 
-.unit {
+#instrumentPane > div.el-collapse > div.el-collapse-item  {
   width: 405px;
   border-radius: 5px;
-  background-color: #999;
-  margin: 2px 0px;
+  color: #ff0000;
+}
+
+div.el-collapse-item {
+  background-color: #f00 !important;
+    color: #ff0000 !important;
 }
 
 #container {
@@ -202,6 +206,11 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: stretch;
+}
+
+#sidebar {
+  overflow: hidden;
+  height: 100%;
 }
 
 #container > :first-child {
@@ -233,10 +242,6 @@ export default {
   min-width: 0px;
 }
 
-#instrumentPane {
-  background-color: #000;
-}
-
 .splitpanes__pane {
   display: flex;
   min-width: 0px;
@@ -250,6 +255,18 @@ export default {
 
 #collapseDiv.collapsed {
   width: 0px;
+}
+
+#unitPane {
+  min-width: 420px;
+  background-color: #222;  
+}
+
+.libraryItem {
+  margin: 5px;
+  padding: 5px;
+  display: inline-block;
+  background-color: #fff;
 }
 
 </style>
