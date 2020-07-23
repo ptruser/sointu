@@ -33,7 +33,7 @@ endstruc
 SECT_TEXT(sutick)
 
 
-EXPORT MANGLE_FUNC(su_tick,0)
+EXPORT MANGLE_FUNC(su_tick,PTRSIZE)
 %if BITS == 32  ; stdcall
     mov     ecx, [esp + 4]
     pushad
