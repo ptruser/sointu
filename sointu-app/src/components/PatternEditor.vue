@@ -33,13 +33,14 @@
       </div>
     </div>
 
+    <div id="instrumentTabs">
+      <div>Instruments</div>
+      <div v-for="(item, index) in instruments" :key="index" :style="{width: instrumentwidths[index]*30+'px'}">
+        {{item.name}}
+      </div>
+    </div>
+
     <table tabindex="2" @keydown="keydown">
-            <thead>
-          <th class="cell">Inst</th>
-          <th class="instrumentLabel" style="background-color:#444" :colspan="item.voices" v-for="(item, index) in instruments" :key="index" scope="col">
-          Instr{{index}}
-          </th>
-        </thead>
         <thead>
             <draggable v-model="tracks" tag="tr">
                 <th class="cell" :key="-1">
@@ -118,9 +119,27 @@ const KEYMAP = {
 const NOTES_IN_OCTAVE = ['C-', 'C#', 'D-', 'D#', 'E-', 'E#', 'F-', 'F#', 'G-', 'G#', 'A-', 'A#', 'B-']
 
 export default {
-  computed: mapState([
-    'tracks', 'songLength', 'currentPattern', 'patternLength', 'currentRow', 'currentTrack', 'patterns', 'holdNote', 'instruments'
-  ]),
+  computed: {
+    instrumentwidths: function() {
+      var ret = []
+      var track = 0
+      var voice = 0
+      var base = 0
+      return this.instruments.map(instrument => {
+        voice += instrument.voices
+        while (track < this.tracks.length && voice > this.tracks[track].voices) {
+          voice -= this.tracks[track].voices          
+          track++
+        }
+        var diff = track < this.tracks.length ? track + voice / this.tracks[track].voices - base : 1
+        base += diff
+        return diff
+      })
+    },
+    ...mapState([
+      'tracks', 'songLength', 'currentPattern', 'patternLength', 'currentRow', 'currentTrack', 'patterns', 'holdNote', 'instruments'
+    ])
+  },
   components: {
     draggable
   },
@@ -258,6 +277,24 @@ td.active {
 
 .instrumentLabel {
   font-size: 6pt;
+}
+
+#instrumentTabs {
+  display: flex;
+  flex-direction: row;
+    width: 100%;
+}
+
+#instrumentTabs > div {
+    flex: 0 0 auto;
+    overflow-x: hidden;
+    overflow-y: hidden; 
+    white-space: nowrap;
+    font-size: 10px;
+}
+
+#instrumentTabs > :first-child {
+  width: 30px;
 }
 
 #titleContainer {

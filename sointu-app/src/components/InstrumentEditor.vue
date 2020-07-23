@@ -167,10 +167,10 @@ export default {
       e.stopPropagation()
     },
     addInstrument () {
-
+      this.$store.commit('addInstrument')
     },
     deleteInstrument () {
-
+       this.$store.commit('deleteInstrument')
     }
   }
 }
