@@ -1,6 +1,7 @@
 package tracker
 
 import (
+	"log"
 	"math"
 	"sync/atomic"
 
@@ -144,6 +145,7 @@ func (s *Sequencer) loop(bufferSize int, service sointu.SynthService, context so
 				callBack(buffer)
 				if err != nil {
 					s.Disable()
+					log.Printf("error in sequencer rendering: %v", err)
 					break
 				}
 				rowTimeRemaining -= timeAdvanced
@@ -159,6 +161,7 @@ func (s *Sequencer) loop(bufferSize int, service sointu.SynthService, context so
 				err = audioOut.WriteAudio(buffer[:2*rendered])
 				if err != nil {
 					s.Disable()
+					log.Printf("error in sequencer writing to audio out: %v", err)
 					break
 				}
 			}
