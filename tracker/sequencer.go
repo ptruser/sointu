@@ -67,8 +67,6 @@ func NewSequencer(bufferSize int, service sointu.SynthService, context sointu.Au
 func (s *Sequencer) loop(bufferSize int, service sointu.SynthService, context sointu.AudioContext, callBack func([]float32), iterator func([]RowNote) []RowNote) {
 	buffer := make([]float32, bufferSize)
 	renderTries := 0
-	audioOut := context.Output()
-	defer audioOut.Close()
 	rowIn := make([]RowNote, 32)
 	rowLength := math.MaxInt32
 	rowTimeRemaining := 0
@@ -95,9 +93,11 @@ func (s *Sequencer) loop(bufferSize int, service sointu.SynthService, context so
 			}
 		}
 		released := false
+		audioOut := context.Output()
 		for s.Enabled() {
 			select {
 			case <-s.closer:
+				audioOut.Close()
 				return
 			case n := <-s.noteOn:
 				s.trigger(n.voiceStart, n.voiceEnd, n.note, n.id)
@@ -163,6 +163,7 @@ func (s *Sequencer) loop(bufferSize int, service sointu.SynthService, context so
 				}
 			}
 		}
+		audioOut.Close()
 	}
 }
 
