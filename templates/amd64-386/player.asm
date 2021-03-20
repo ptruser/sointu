@@ -36,7 +36,8 @@ extern syncBuf
     {{- $prologsize := len .Stacklocs}}
     {{- if or .RowSync (.HasOp "sync")}}
     {{- if or (and (eq .OS "windows") (not .Amd64)) (eq .OS "darwin")}}
-    {{.Push "_syncBuf" "SyncBufPtr"}}
+    {{- .Prepare "_syncBuf"}}
+    {{.Push (.Use "_syncBuf") "SyncBufPtr"}}
     {{- else}}
     {{- .Prepare "syncBuf"}}
     {{.Push (.Use "syncBuf") "SyncBufPtr"}}
